@@ -1,4 +1,4 @@
-# express-postgresql-knex-vue
+# todos-pevn-stack
 
 ## Project setup
 ```
