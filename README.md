@@ -1,21 +1,15 @@
 # todos-pevn-stack
 
-## Project setup
-```
-npm install
-```
+A simple todo application built for learning purposes. 
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Stack
+* PostgreSQL
+* Knex.js
+* Express / Node
+* Vue / Vue Router / Vuex
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
+## Features
+* Authentication with JWT
+* RESTful JSON API
+* Performance optimized SPA
+  
