@@ -11,5 +11,5 @@ A simple todo application built for learning purposes.
 ## Features
 * Authentication with JWT
 * RESTful JSON API
-* Performance optimized SPA
+* Modern & performant responsive front end
   
