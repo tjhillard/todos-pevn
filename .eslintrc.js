@@ -13,7 +13,8 @@ module.exports = {
     'arrow-body-style': 'off',
     'consistent-return': 'off',
     'array-callback-return': 'off',
-    'prefer-destructuring': ['error', {'array': false}]
+    'prefer-destructuring': ['error', {'array': false}],
+    'class-methods-use-this': 'off'
   },
   parserOptions: {
     parser: 'babel-eslint',

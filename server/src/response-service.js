@@ -1,13 +1,26 @@
-/* eslint class-methods-use-this: 'off' */
-
+/**
+ * @description Abstraction layer for handling JSON responses
+ */
 class ResponseService {
-  collection(data) {
+  /**
+   *
+   * @param {any} data
+   */
+  collection(data, meta = {}) {
     return {
       success: true,
       data,
+      meta: {
+        count: data.length,
+        page_number: meta.page_number || null,
+      },
     };
   }
 
+  /**
+   *
+   * @param {any} data
+   */
   resource(data) {
     let resource; // <-- returns this as the data prop
     if (Array.isArray(data)) {
@@ -24,14 +37,24 @@ class ResponseService {
   /**
    *  ERRORS
    */
-  badRequest400(req, details) {
+
+  /**
+  *
+  * @param {Request=} req
+  * @param {any=} details
+  */
+  badRequest400(details, message) {
     return {
       success: false,
-      message: 'Bad request',
+      message: message || 'Bad Request',
       details,
     };
   }
 
+  /**
+   *
+   * @param {Request} req
+   */
   notFound404(req) {
     console.log(req);
     return {

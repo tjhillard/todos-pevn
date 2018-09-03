@@ -3,6 +3,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+const authRouter = require('./routes/auth');
 const todosRouter = require('./routes/todos');
 
 const app = express();
@@ -23,7 +24,8 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
-app.use('/api/todos', todosRouter);
+app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/todos', todosRouter);
 
 /* Error Handlers */
 app.use((err, req, res, next) => { // eslint-disable-line

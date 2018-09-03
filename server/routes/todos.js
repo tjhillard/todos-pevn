@@ -1,23 +1,23 @@
 const express = require('express');
 const db = require('../db/db-service-base');
 
-const ValidationService = require('../api/request-validator');
-const ResponseService = require('../api/response-service');
+const RequestValidator = require('../src/request-schema-validator');
+const ResponseService = require('../src/response-service');
 
 const router = express.Router();
 
-// GET /todos
+// GET /api/v1/todos
 router.get('/', (req, res, next) => {
-  db.getAll('todo')
+  db.paginate('todo', { per_page: req.query.per_page, pageNumber: req.query.page_number })
     .then((todos) => {
-      res.json(ResponseService.collection(todos));
+      res.json(ResponseService.collection(todos, req.query));
     })
     .catch((err) => {
       next(err);
     });
 });
 
-// GET /todos/:id
+// GET /api/v1/todos/:id
 router.get('/:id', (req, res, next) => {
   let todoFromDb;
   try {
@@ -37,13 +37,13 @@ router.get('/:id', (req, res, next) => {
     });
 });
 
-// POST /todos
+// POST /api/v1/todos
 router.post('/', (req, res) => {
-  new ValidationService('todo', req.body)
-    .validateRequestBody()
+  RequestValidator
+    .validateRequestBody('todo', req.body)
     .then((missingRequiredProperties) => {
       if (missingRequiredProperties.length > 0) {
-        return res.status(400).json(ResponseService.badRequest400(req, {
+        return res.status(400).json(ResponseService.badRequest400({
           missing_fields: missingRequiredProperties,
         }));
       }
@@ -57,7 +57,7 @@ router.post('/', (req, res) => {
     });
 });
 
-// PUT /todos/:id
+// PUT /api/v1/todos/:id
 router.put('/:id', (req, res) => {
   const newTodoData = {};
   if (req.body.description) {
@@ -71,7 +71,7 @@ router.put('/:id', (req, res) => {
   });
 });
 
-// DELETE /todos/:id
+// DELETE /api/v1/todos/:id
 router.delete('/:id', (req, res) => {
   db.delete('todo', req.params.id).then((deletedTodo) => {
     if (deletedTodo.length > 0) {
