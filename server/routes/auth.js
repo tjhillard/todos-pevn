@@ -1,5 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('../db/user');
 
 const RequestValidator = require('../src/request-schema-validator');
@@ -43,7 +44,7 @@ router.post('/signup', (req, res, next) => {
         // if email address is unique
         User.getOneByEmail(req.body.email).then((existingUser) => {
           if (existingUser) {
-            return res.status(400).json(ResponseService.badRequest400(req, {
+            return res.status(400).json(ResponseService.badRequest400({
               invalid_field: 'email',
               reason: 'unique',
             }));
@@ -94,14 +95,19 @@ router.post('/login', (req, res, next) => {
 
     User.getOneByEmail(req.body.email).then((user) => {
       if (user) {
-        console.log(user);
         bcrypt
           .compare(req.body.password, user.password)
           .then((match) => {
             if (match) {
-              res.json({
-                id: user.id,
-                token: 'Bearer 12345',
+              // Generate JWT
+              jwt.sign(user, 'secret', { expiresIn: '7d' }, (err, token) => {
+                if (err) {
+                  next(err);
+                }
+                res.json({
+                  user: user.id,
+                  token,
+                });
               });
             } else {
               // Email is valid but passsord does not match

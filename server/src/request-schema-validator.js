@@ -18,10 +18,13 @@ class RequestSchemaValidator {
       knex(table)
         .columnInfo()
         .then((schema) => {
+          console.log(schema);
           Object.keys(schema).map((key) => {
             if (!schema[key].nullable && schema[key].defaultValue === null) {
               if (typeof reqBody[key] === 'undefined') {
-                return missingRequiredProperties.push(key);
+                if (key !== 'user_id') {
+                  return missingRequiredProperties.push(key);
+                }
               }
             }
           });

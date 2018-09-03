@@ -1,4 +1,5 @@
 const express = require('express');
+const jwt = require('express-jwt');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -15,6 +16,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../dist/')));
 
 /* API Middleware */
+app.use(jwt({ secret: 'secret' }).unless({ path: ['/api/v1/auth/login', '/api/v1/auth/signup'] }));
 app.use('/api', (req, res, next) => {
   next();
 });

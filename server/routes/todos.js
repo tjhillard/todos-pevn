@@ -1,5 +1,5 @@
 const express = require('express');
-const db = require('../db/db-service-base');
+const db = require('../db/todo.js');
 
 const RequestValidator = require('../src/request-schema-validator');
 const ResponseService = require('../src/response-service');
@@ -8,7 +8,7 @@ const router = express.Router();
 
 // GET /api/v1/todos
 router.get('/', (req, res, next) => {
-  db.paginate('todo', { per_page: req.query.per_page, pageNumber: req.query.page_number })
+  db.paginate(req.user.id, { per_page: req.query.per_page, pageNumber: req.query.page_number })
     .then((todos) => {
       res.json(ResponseService.collection(todos, req.query));
     })
@@ -19,13 +19,7 @@ router.get('/', (req, res, next) => {
 
 // GET /api/v1/todos/:id
 router.get('/:id', (req, res, next) => {
-  let todoFromDb;
-  try {
-    todoFromDb = db.getById('todo', req.params.id).first();
-  } catch (err) {
-    next(err);
-  }
-  todoFromDb
+  db.getById(req.user.id, req.params.id)
     .then((todo) => {
       if (todo) {
         return res.json(ResponseService.resource(todo));
@@ -47,9 +41,9 @@ router.post('/', (req, res) => {
           missing_fields: missingRequiredProperties,
         }));
       }
-    })
-    .then(() => {
-      db.create('todo', {
+
+      db.create({
+        user_id: req.user.id,
         description: req.body.description,
       }).then((todo) => {
         res.json(ResponseService.resource(todo));
@@ -66,14 +60,17 @@ router.put('/:id', (req, res) => {
   if (typeof req.body.completed !== 'undefined') {
     newTodoData.completed = req.body.completed;
   }
-  db.update('todo', req.params.id, newTodoData).then((todo) => {
-    res.json(ResponseService.resource(todo));
+  db.update(req.user.id, req.params.id, newTodoData).then((todo) => {
+    if (todo.length === 1) {
+      res.json(ResponseService.resource(todo));
+    }
+    return res.status(404).json(ResponseService.notFound404(req));
   });
 });
 
 // DELETE /api/v1/todos/:id
 router.delete('/:id', (req, res) => {
-  db.delete('todo', req.params.id).then((deletedTodo) => {
+  db.delete(req.user.id, req.params.id).then((deletedTodo) => {
     if (deletedTodo.length > 0) {
       return res.status(204).send();
     }

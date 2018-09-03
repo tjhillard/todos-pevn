@@ -20,7 +20,7 @@ module.exports = {
    */
   paginate(table, options = {}) {
     const limit = options.per_page || 10;
-    const pageNumber = options.pageNumber || 0;
+    const pageNumber = options.pageNumber || 1;
 
     return knex(table)
       .orderBy('id', 'asc')
