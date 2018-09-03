@@ -30,6 +30,7 @@
     "@vue/cli-plugin-eslint": "^3.0.1",
     "@vue/cli-service": "^3.0.1",
     "@vue/eslint-config-airbnb": "^3.0.1",
+    "ajv": "^6.5.3",
     "jest": "^23.5.0",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",

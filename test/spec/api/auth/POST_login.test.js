@@ -1,30 +1,15 @@
 const axios = require('axios');
+const badRequestSchema = require('../../../support/schemas/error/400.json');
 
 axios.defaults.baseURL = 'http://localhost:3000/api/v1';
 
-/**
- *
- * --- WARNING! ---
- * This test is dependent on /signup working correctly
- * until I figure out how to seed users with hashed passwords
- *
- */
-
 const user = {
-  email: `foo+${new Date().getTime()}@bar.com`,
-  password: 'foobar123!',
+  email: 'foo@bar.com',
+  password: 'password123',
 };
 
-// Sign up with above user
-beforeAll(async (done) => {
-  await axios.post('/auth/signup', user).then((res) => {
-    expect(res.status).toBe(200);
-    done();
-  });
-});
-
 // Login with same above user
-describe('POST /login', () => {
+describe('POST /auth/login', () => {
   describe('👌  valid email & password', () => {
     test('returns a token', async (done) => {
       await axios.post('/auth/login', user).then((res) => {
@@ -46,6 +31,7 @@ describe('POST /login', () => {
         expect(err.response.data.success).toBe(false);
         expect(err.response.data.id).toBeUndefined();
         expect(err.response.data.token).toBeUndefined();
+        expect(err.response.data).toMatchJsonSchema(badRequestSchema);
         done();
       });
     });
@@ -58,6 +44,7 @@ describe('POST /login', () => {
         expect(err.response.data.success).toBe(false);
         expect(err.response.data.id).toBeUndefined();
         expect(err.response.data.token).toBeUndefined();
+        expect(err.response.data).toMatchJsonSchema(badRequestSchema);
         done();
       });
     });
@@ -70,6 +57,7 @@ describe('POST /login', () => {
         expect(err.response.data.success).toBe(false);
         expect(err.response.data.id).toBeUndefined();
         expect(err.response.data.token).toBeUndefined();
+        expect(err.response.data).toMatchJsonSchema(badRequestSchema);
         done();
       });
     });

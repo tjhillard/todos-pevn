@@ -1,8 +1,9 @@
 const axios = require('axios');
+const badRequestSchema = require('../../../support/schemas/error/400.json');
 
 axios.defaults.baseURL = 'http://localhost:3000/api/v1';
 
-describe('POST /signup', () => {
+describe('POST /auth/signup', () => {
   describe('👌  valid request', () => {
     test('creates new user and returns the user id and token', async (done) => {
       const user = {
@@ -27,6 +28,7 @@ describe('POST /signup', () => {
         expect(err.response.data.success).toBe(false);
         expect(err.response.data.id).toBeUndefined();
         expect(err.response.data.token).toBeUndefined();
+        expect(err.response.data).toMatchJsonSchema(badRequestSchema);
         done();
       });
     });
@@ -39,6 +41,7 @@ describe('POST /signup', () => {
         expect(err.response.data.success).toBe(false);
         expect(err.response.data.id).toBeUndefined();
         expect(err.response.data.token).toBeUndefined();
+        expect(err.response.data).toMatchJsonSchema(badRequestSchema);
         done();
       });
     });
@@ -52,6 +55,7 @@ describe('POST /signup', () => {
         expect(err.response.data.success).toBe(false);
         expect(err.response.data.id).toBeUndefined();
         expect(err.response.data.token).toBeUndefined();
+        expect(err.response.data).toMatchJsonSchema(badRequestSchema);
         done();
       });
     });
@@ -65,6 +69,7 @@ describe('POST /signup', () => {
         expect(err.response.data.success).toBe(false);
         expect(err.response.data.id).toBeUndefined();
         expect(err.response.data.token).toBeUndefined();
+        expect(err.response.data).toMatchJsonSchema(badRequestSchema);
         done();
       });
     });
@@ -78,6 +83,7 @@ describe('POST /signup', () => {
         expect(err.response.data.success).toBe(false);
         expect(err.response.data.id).toBeUndefined();
         expect(err.response.data.token).toBeUndefined();
+        expect(err.response.data).toMatchJsonSchema(badRequestSchema);
         done();
       });
     });
