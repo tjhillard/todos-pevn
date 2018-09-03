@@ -8,7 +8,10 @@ module.exports = {
    */
   isValidEmail(email) {
     try {
-      return validator.isEmail(email);
+      if (typeof email === 'string') {
+        return validator.isEmail(email);
+      }
+      return false;
     } catch (err) {
       console.error(err);
       return false;

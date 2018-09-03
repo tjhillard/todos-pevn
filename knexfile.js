@@ -1,8 +1,13 @@
 module.exports = {
 
+  test: {
+    client: 'pg',
+    connection: 'postgres://localhost/todos_test',
+  },
+
   development: {
     client: 'pg',
-    connection: 'postgres://localhost/todos',
+    connection: 'postgres://localhost/todos_dev',
   },
 
   staging: {

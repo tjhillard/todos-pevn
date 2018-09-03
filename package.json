@@ -10,6 +10,7 @@
     "start:dev": "NODE_ENV=development nodemon server/bin/www"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "bcrypt": "^3.0.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
@@ -29,6 +30,7 @@
     "@vue/cli-plugin-eslint": "^3.0.1",
     "@vue/cli-service": "^3.0.1",
     "@vue/eslint-config-airbnb": "^3.0.1",
+    "jest": "^23.5.0",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
     "vue-template-compiler": "^2.5.17"

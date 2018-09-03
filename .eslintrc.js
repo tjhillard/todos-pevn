@@ -2,6 +2,10 @@ module.exports = {
   root: true,
   env: {
     node: true,
+    jasmine: true,
+  },
+  globals: {
+    test: true,
   },
   extends: [
     'plugin:vue/essential',

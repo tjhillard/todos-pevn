@@ -19,7 +19,7 @@ router.post('/signup', (req, res, next) => {
     // validate request body against db schema
     .then((missingRequiredProperties) => {
       if (missingRequiredProperties.length > 0) {
-        return res.json(ResponseService.badRequest400(req, {
+        return res.status(400).json(ResponseService.badRequest400({
           missing_fields: missingRequiredProperties,
         }));
       }
@@ -28,13 +28,13 @@ router.post('/signup', (req, res, next) => {
       const validPass = validator.isValidPassword(req.body.password);
 
       if (!validEmail) {
-        return res.status(400).json(ResponseService.badRequest400(req, {
+        return res.status(400).json(ResponseService.badRequest400({
           invalid_field: 'email',
         }));
       }
 
       if (!validPass) {
-        return res.status(400).json(ResponseService.badRequest400(req, {
+        return res.status(400).json(ResponseService.badRequest400({
           invalid_field: 'password',
         }));
       }
@@ -58,7 +58,18 @@ router.post('/signup', (req, res, next) => {
               };
               // insert user int db
               User.create(user).then((id) => {
-                res.json(ResponseService.resource(id));
+                if (id) {
+                  // Generate JWT
+                  jwt.sign(user, 'secret', { expiresIn: '7d' }, (err, token) => {
+                    if (err) {
+                      next(err);
+                    }
+                    res.json({
+                      id,
+                      token,
+                    });
+                  });
+                }
               });
             });
         });
@@ -105,17 +116,17 @@ router.post('/login', (req, res, next) => {
                   next(err);
                 }
                 res.json({
-                  user: user.id,
+                  id: user.id,
                   token,
                 });
               });
             } else {
               // Email is valid but passsord does not match
-              res.json(ResponseService.badRequest400({}, 'Email and password do not match.'));
+              res.status(400).json(ResponseService.badRequest400({}, 'Email and password do not match.'));
             }
           });
       } else {
-        res.json(ResponseService.badRequest400({}, 'Could not find a user with provided email address in our system.'));
+        res.status(400).json(ResponseService.badRequest400({}, 'Could not find a user with provided email address in our system.'));
       }
     });
   } catch (err) {
