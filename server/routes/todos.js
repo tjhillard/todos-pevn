@@ -62,7 +62,7 @@ router.put('/:id', (req, res) => {
   }
   db.update(req.user.id, req.params.id, newTodoData).then((todo) => {
     if (todo.length === 1) {
-      res.json(ResponseService.resource(todo));
+      return res.json(ResponseService.resource(todo));
     }
     return res.status(404).json(ResponseService.notFound404(req));
   });
