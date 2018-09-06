@@ -28,7 +28,7 @@ describe('POST /auth/login', () => {
         password: 'qwerty12345',
       }).catch((err) => {
         expect(err.response.status).toBe(400);
-        expect(err.response.data.success).toBe(false);
+        expect(err.response.data.error).toBe(true);
         expect(err.response.data.id).toBeUndefined();
         expect(err.response.data.token).toBeUndefined();
         expect(err.response.data).toMatchJsonSchema(badRequestSchema);
@@ -41,7 +41,7 @@ describe('POST /auth/login', () => {
         email: 'notaregisteredemail@usagovernment.gov',
       }).catch((err) => {
         expect(err.response.status).toBe(400);
-        expect(err.response.data.success).toBe(false);
+        expect(err.response.data.error).toBe(true);
         expect(err.response.data.id).toBeUndefined();
         expect(err.response.data.token).toBeUndefined();
         expect(err.response.data).toMatchJsonSchema(badRequestSchema);
@@ -54,7 +54,7 @@ describe('POST /auth/login', () => {
         password: 'qwerty12345',
       }).catch((err) => {
         expect(err.response.status).toBe(400);
-        expect(err.response.data.success).toBe(false);
+        expect(err.response.data.error).toBe(true);
         expect(err.response.data.id).toBeUndefined();
         expect(err.response.data.token).toBeUndefined();
         expect(err.response.data).toMatchJsonSchema(badRequestSchema);

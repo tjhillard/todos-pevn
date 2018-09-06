@@ -21,7 +21,7 @@ describe('GET /todos', () => {
     test('returns an array of todo resources', async (done) => {
       await axios.get('/todos', { headers: { authorization: `Bearer ${token}` } }).then((res) => {
         expect(res.status).toBe(200);
-        expect(res.data.success).toBe(true);
+        expect(res.data.error).toBeUndefined();
         expect(res.data.data[0]).toMatchJsonSchema(todoSchema);
         done();
       });
@@ -32,7 +32,7 @@ describe('GET /todos', () => {
     test('doesnt show any todos that user isnt authorized to see', async (done) => {
       await axios.get('/todos', { headers: { authorization: `Bearer ${token}` } }).then((res) => {
         expect(res.status).toBe(200);
-        expect(res.data.success).toBe(true);
+        expect(res.data.error).toBeUndefined();
         expect(res.data.data[0]).toMatchJsonSchema(todoSchema);
         res.data.data.forEach((todo) => {
           expect(todo.id).not.toBe(2);

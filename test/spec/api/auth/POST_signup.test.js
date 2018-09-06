@@ -25,7 +25,7 @@ describe('POST /auth/signup', () => {
         email: `foo+${new Date().getTime()}@bar.com`,
       }).catch((err) => {
         expect(err.response.status).toBe(400);
-        expect(err.response.data.success).toBe(false);
+        expect(err.response.data.error).toBe(true);
         expect(err.response.data.id).toBeUndefined();
         expect(err.response.data.token).toBeUndefined();
         expect(err.response.data).toMatchJsonSchema(badRequestSchema);
@@ -38,7 +38,7 @@ describe('POST /auth/signup', () => {
         password: 'password123',
       }).catch((err) => {
         expect(err.response.status).toBe(400);
-        expect(err.response.data.success).toBe(false);
+        expect(err.response.data.error).toBe(true);
         expect(err.response.data.id).toBeUndefined();
         expect(err.response.data.token).toBeUndefined();
         expect(err.response.data).toMatchJsonSchema(badRequestSchema);
@@ -52,7 +52,7 @@ describe('POST /auth/signup', () => {
         password: 'password123',
       }).catch((err) => {
         expect(err.response.status).toBe(400);
-        expect(err.response.data.success).toBe(false);
+        expect(err.response.data.error).toBe(true);
         expect(err.response.data.id).toBeUndefined();
         expect(err.response.data.token).toBeUndefined();
         expect(err.response.data).toMatchJsonSchema(badRequestSchema);
@@ -66,7 +66,7 @@ describe('POST /auth/signup', () => {
         password: '123',
       }).catch((err) => {
         expect(err.response.status).toBe(400);
-        expect(err.response.data.success).toBe(false);
+        expect(err.response.data.error).toBe(true);
         expect(err.response.data.id).toBeUndefined();
         expect(err.response.data.token).toBeUndefined();
         expect(err.response.data).toMatchJsonSchema(badRequestSchema);
@@ -80,7 +80,7 @@ describe('POST /auth/signup', () => {
         password: 'foobar123!!!',
       }).catch((err) => {
         expect(err.response.status).toBe(400);
-        expect(err.response.data.success).toBe(false);
+        expect(err.response.data.error).toBe(true);
         expect(err.response.data.id).toBeUndefined();
         expect(err.response.data.token).toBeUndefined();
         expect(err.response.data).toMatchJsonSchema(badRequestSchema);

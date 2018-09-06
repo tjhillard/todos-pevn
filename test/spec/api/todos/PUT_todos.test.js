@@ -51,7 +51,7 @@ describe('PUT /todos/:id', () => {
       };
       await axios(putPayload).then((res) => {
         expect(res.status).toBe(200);
-        expect(res.data.success).toBe(true);
+        expect(res.data.error).toBeUndefined();
         expect(res.data.data.description).toBe('Edited todo');
         expect(res.data.data.completed).toBe(true);
         expect(res.data.data).toMatchJsonSchema(todoSchema);
@@ -73,7 +73,7 @@ describe('PUT /todos/:id', () => {
       };
       await axios(putPayload).catch((err) => {
         expect(err.response.status).toBe(404);
-        expect(err.response.data.success).toBe(false);
+        expect(err.response.data.error).toBe(true);
         expect(err.response.data).toMatchJsonSchema(notFoundSchema);
         done();
       });

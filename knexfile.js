@@ -1,13 +1,24 @@
+const path = require('path');
+
 module.exports = {
 
   test: {
     client: 'pg',
     connection: 'postgres://localhost/todos_test',
+    migrations: {
+      directory: path.join(__dirname, 'db/migrations'),
+    },
+    seeds: {
+      directory: path.join(__dirname, 'db/seeds'),
+    },
   },
 
   development: {
     client: 'pg',
     connection: 'postgres://localhost/todos_dev',
+    migrations: {
+      directory: path.join(__dirname, 'db/migrations'),
+    },
   },
 
   staging: {

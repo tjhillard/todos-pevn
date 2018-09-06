@@ -32,7 +32,7 @@ describe('POST /todos', () => {
       };
       await axios(payload).then((res) => {
         expect(res.status).toBe(200);
-        expect(res.data.success).toBe(true);
+        expect(res.data.error).toBeUndefined();
         expect(res.data.data).toMatchJsonSchema(todoSchema);
         done();
       });
@@ -51,7 +51,7 @@ describe('POST /todos', () => {
       };
       await axios.post('/todos', payload).catch((err) => {
         expect(err.response.status).toBe(401);
-        expect(err.response.data.success).toBe(false);
+        expect(err.response.data.error).toBe(true);
         done();
       });
     });
@@ -69,7 +69,7 @@ describe('POST /todos', () => {
       };
       await axios(payload).catch((err) => {
         expect(err.response.status).toBe(400);
-        expect(err.response.data.success).toBe(false);
+        expect(err.response.data.error).toBe(true);
         expect(err.response.data).toMatchJsonSchema(badRequestSchema);
         done();
       });
