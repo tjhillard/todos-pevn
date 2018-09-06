@@ -18,6 +18,25 @@ A simple todo application built for learning purposes.
 * User authentication & authorization with JWT
 * RESTful JSON API
 * Progressive Web App Support
-* e2e testing using Cypress
-* Unit & integration tests using Jest
-* Test coverage with Istanbul
+* e2e testing with Cypress
+* Unit & API integration tests with Jest
+* Test coverage tracking with Istanbul
+* CI/CD with CircleCI
+* Code linting with ESLint
+
+### Running Locally
+
+Run dev server
+```bash
+npm run serve
+```
+
+Build project assets
+```bash
+npm run build
+```
+
+Run dev API
+```bash
+node bin/www
+```
