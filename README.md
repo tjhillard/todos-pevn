@@ -15,7 +15,9 @@ A simple todo application built for learning purposes.
 * Vue / Vue Router / Vuex
 
 ## Features
-* Authentication with JWT
+* User authentication & authorization with JWT
 * RESTful JSON API
-* Modern & performant responsive front end
-  
+* Progressive Web App Support
+* e2e testing using Cypress
+* Unit & integration tests using Jest
+* Test coverage with Istanbul
