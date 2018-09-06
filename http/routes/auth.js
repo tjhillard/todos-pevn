@@ -1,13 +1,10 @@
-// Libraries
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-// Controllers
 const User = require('../controllers/UserController');
-// Validation Middleware
 const { loginValidator, signUpValidator } = require('../middleware/validation/auth');
-// Services
-const ResponseService = require('../services/response-service');
+const RespondWith = require('../services/response-service');
+const { jwtSecret, jwtSignatureOptions } = require('../services/jwt-service');
 
 const router = express.Router();
 
@@ -29,14 +26,17 @@ router.post('/signup', signUpValidator, (req, res, next) => {
         if (id) {
           user.password = undefined;
           // Generate JWT
-          jwt.sign(user, 'secret', { expiresIn: '7d' }, (err, token) => {
+          jwt.sign(user, jwtSecret, jwtSignatureOptions, (err, token) => {
             if (err) {
               next(err);
             }
-            res.json({
-              id,
-              token,
-            });
+            if (token) {
+              return res.json({
+                id,
+                token,
+              });
+            }
+            RespondWith.internal500(); // just in case
           });
         }
       });
@@ -60,7 +60,7 @@ router.post('/login', loginValidator, (req, res, next) => {
             if (match) {
               user.password = undefined;
               // Generate JWT
-              jwt.sign(user, 'secret', { expiresIn: '7d' }, (err, token) => {
+              jwt.sign(user, jwtSecret, jwtSignatureOptions, (err, token) => {
                 if (err) {
                   next(err);
                 }
@@ -71,14 +71,14 @@ router.post('/login', loginValidator, (req, res, next) => {
               });
             } else {
               // Email is valid but passsord does not match
-              res.status(400).json(ResponseService.badRequest400({}, 'Email and password do not match.'));
+              res.status(400).json(RespondWith.badRequest400({}, 'Email and password do not match.'));
             }
           })
           .catch((err) => {
             next(err);
           });
       } else {
-        res.status(400).json(ResponseService.badRequest400({}, 'Could not find a user with provided email address in our system.'));
+        res.status(400).json(RespondWith.badRequest400({}, 'Could not find a user with provided email address in our system.'));
       }
     })
     .catch((err) => {

@@ -36,6 +36,15 @@ class ResponseService {
    *  ERRORS
    */
 
+  internal500(details = {}) {
+    return {
+      error: true,
+      name: 'InternalServerError',
+      message: 'Something wrong happened. Please try again later.',
+      details,
+    };
+  }
+
   /**
   *
   * @param {Request=} req
@@ -57,6 +66,7 @@ class ResponseService {
   notFound404(req) {
     return {
       error: true,
+      name: 'NotFound',
       message: 'Unable to find resource with provided parameters',
       details: {
         url: req.originalUrl,

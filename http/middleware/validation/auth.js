@@ -21,6 +21,7 @@ exports.signUpValidator = (req, res, next) => {
         reason: 'unique',
       }));
     }
+    // good to go
     next();
   });
 };
@@ -31,6 +32,7 @@ exports.loginValidator = (req, res, next) => {
   if (validatedRequest.error) {
     return res.status(400).json(Response.badRequest400(validatedRequest.error));
   }
+  // good to go
   next();
 };
 

@@ -6,4 +6,4 @@ class TodoController {
   // Any future potential todo specific bussines logic can go here though.
 }
 
-module.exportss = new TodoController('todo');
+module.exportss = new TodoController();

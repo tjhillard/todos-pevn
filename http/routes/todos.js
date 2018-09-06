@@ -1,17 +1,16 @@
 const express = require('express');
 const ResourceController = require('../controllers/ResourceController.js');
 const { newTodoValidator, completedTodoValidator } = require('../middleware/validation/todo');
-const ResponseService = require('../services/response-service.js');
+const RespondWith = require('../services/response-service.js');
 
 const Todo = new ResourceController('todo');
-
 const router = express.Router();
 
 // GET /api/v1/todos
 router.get('/', (req, res, next) => {
   Todo.paginate(req.user.id, { per_page: req.query.per_page, page_number: req.query.page_number })
     .then((todos) => {
-      res.json(ResponseService.collection(todos, req.query));
+      res.json(RespondWith.collection(todos, req.query));
     })
     .catch((err) => {
       next(err);
@@ -23,9 +22,9 @@ router.get('/:id', (req, res, next) => {
   Todo.getById(req.user.id, req.params.id)
     .then((todo) => {
       if (todo) {
-        return res.json(ResponseService.resource(todo));
+        return res.json(RespondWith.resource(todo));
       }
-      return res.status(404).json(ResponseService.notFound404(req));
+      return res.status(404).json(RespondWith.notFound404(req));
     })
     .catch((err) => {
       next(err);
@@ -38,7 +37,7 @@ router.post('/', newTodoValidator, (req, res) => {
     user_id: req.user.id,
     description: req.body.description,
   }).then((todo) => {
-    res.json(ResponseService.resource(todo));
+    res.json(RespondWith.resource(todo));
   });
 });
 
@@ -53,9 +52,9 @@ router.put('/:id', newTodoValidator, (req, res) => {
   }
   Todo.update(req.user.id, req.params.id, newTodoData).then((todo) => {
     if (todo.length === 1) {
-      return res.json(ResponseService.resource(todo));
+      return res.json(RespondWith.resource(todo));
     }
-    return res.status(404).json(ResponseService.notFound404(req));
+    return res.status(404).json(RespondWith.notFound404(req));
   });
 });
 
@@ -63,9 +62,9 @@ router.put('/:id', newTodoValidator, (req, res) => {
 router.patch('/:id/completed', completedTodoValidator, (req, res) => {
   Todo.update(req.user.id, req.params.id, { completed: req.body.completed }).then((todo) => {
     if (todo.length === 1) {
-      return res.json(ResponseService.resource(todo));
+      return res.json(RespondWith.resource(todo));
     }
-    return res.status(404).json(ResponseService.notFound404(req));
+    return res.status(404).json(RespondWith.notFound404(req));
   });
 });
 

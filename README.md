@@ -24,7 +24,7 @@ A simple todo application built for learning purposes.
 * CI/CD with CircleCI
 * Code linting with ESLint
 
-### Running Locally
+## Running Locally
 
 Run dev server
 ```bash
@@ -39,4 +39,20 @@ npm run build
 Run dev API
 ```bash
 node bin/www
+```
+
+## Tests
+
+Unit Tests (Jest)
+```bash
+npm run test:unit
+```
+API Integration Tests (Jest)
+```bash
+npm run test:api
+```
+
+E2E Tests (Cypress)
+```bash
+npm run test:e2e
 ```
