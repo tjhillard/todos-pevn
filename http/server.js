@@ -3,6 +3,7 @@ const jwt = require('express-jwt');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const helmet = require('helmet');
 
 const authRouter = require('./routes/auth');
 const todosRouter = require('./routes/todos');
@@ -10,6 +11,7 @@ const todosRouter = require('./routes/todos');
 const app = express();
 
 app.use(logger('dev'));
+app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

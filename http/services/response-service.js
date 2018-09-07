@@ -39,6 +39,7 @@ class ResponseService {
   internal500(details = {}) {
     return {
       error: true,
+      status: 500,
       name: 'InternalServerError',
       message: 'Something wrong happened. Please try again later.',
       details,
@@ -53,6 +54,7 @@ class ResponseService {
   badRequest400(details, message) {
     return {
       error: true,
+      status: 400,
       name: 'BadRequest',
       message: message || 'The request is invalid',
       details,
@@ -66,6 +68,7 @@ class ResponseService {
   notFound404(req) {
     return {
       error: true,
+      status: 404,
       name: 'NotFound',
       message: 'Unable to find resource with provided parameters',
       details: {
