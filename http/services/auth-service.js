@@ -19,7 +19,7 @@ class AuthService {
           };
           User.create(user).then((id) => {
             if (id) {
-              user.password = undefined;
+              user.password = undefined; // To prevent the password from being part of the jwt payload
               jwt.sign(user, jwtSecret, jwtSignatureOptions, (err, token) => {
                 if (err) {
                   reject(RespondWith.internal500(err));
@@ -30,7 +30,7 @@ class AuthService {
                     token,
                   });
                 }
-                reject(RespondWith.internal500()); // just in case
+                reject(RespondWith.internal500()); // fallback
               });
             }
           });
@@ -49,15 +49,18 @@ class AuthService {
               .compare(password, user.password)
               .then((match) => {
                 if (match) {
-                  user.password = undefined;
+                  user.password = undefined; // To prevent the password from being part of the jwt payload
                   jwt.sign(user, jwtSecret, jwtSignatureOptions, (err, token) => {
                     if (err) {
                       reject(RespondWith.internal500(err));
                     }
-                    resolve({
-                      id: user.id,
-                      token,
-                    });
+                    if (token) {
+                      resolve({
+                        id: user.id,
+                        token,
+                      });
+                    }
+                    reject(RespondWith.internal500()); // fallback
                   });
                 } else {
                   reject(RespondWith.badRequest400({}, 'Email and password do not match.'));

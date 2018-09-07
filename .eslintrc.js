@@ -22,6 +22,7 @@ module.exports = {
     'class-methods-use-this': 'off',
     'no-useless-constructor': 'off',
     'no-param-reassign': 'off',
+    'max-len': ['error', { 'code': 120 }],
   },
   parserOptions: {
     parser: 'babel-eslint',

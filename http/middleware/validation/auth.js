@@ -14,16 +14,17 @@ exports.signUpValidator = (req, res, next) => {
     return res.status(400).json(Response.badRequest400(validatedRequest.error));
   }
   // unique email?
-  User.getOneByEmail(req.body.email).then((existingUser) => {
-    if (existingUser) {
-      return res.status(400).json(Response.badRequest400({
-        invalid_field: 'email',
-        reason: 'unique',
-      }));
-    }
-    // good to go
-    next();
-  });
+  User.getOneByEmail(req.body.email)
+    .then((existingUser) => {
+      if (existingUser) {
+        return res.status(400).json(Response.badRequest400({
+          invalid_field: 'email',
+          reason: 'unique',
+        }));
+      }
+      // good to go
+      next();
+    });
 };
 
 exports.loginValidator = (req, res, next) => {
