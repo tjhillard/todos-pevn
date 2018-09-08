@@ -1,6 +1,6 @@
 const express = require('express');
 const ResourceController = require('../controllers/ResourceController.js');
-const { newTodoValidator, completedTodoValidator } = require('../middleware/validation/todo');
+const { newTodoValidator, updateTodoValidator } = require('../middleware/validation/todo');
 const RespondWith = require('../services/response-service.js');
 
 const Todo = new ResourceController('todo');
@@ -49,10 +49,13 @@ router.post('/', newTodoValidator, (req, res, next) => {
 });
 
 // PUT /api/v1/todos/:id
-router.put('/:id', newTodoValidator, (req, res, next) => {
+router.put('/:id', updateTodoValidator, (req, res, next) => {
   const newTodoData = {};
   if (req.body.description) {
     newTodoData.description = req.body.description;
+  }
+  if (req.body.completed !== undefined) {
+    newTodoData.completed = req.body.completed;
   }
   Todo
     .update(req.user.id, req.params.id, newTodoData)
@@ -67,30 +70,15 @@ router.put('/:id', newTodoValidator, (req, res, next) => {
     });
 });
 
-// PATCH /api/v1/todos/:id/completed
-router.patch('/:id/completed', completedTodoValidator, (req, res, next) => {
+// DELETE /api/v1/todos/:id
+router.delete('/:id', (req, res, next) => {
   Todo
-    .update(req.user.id, req.params.id, { completed: req.body.completed })
+    .softDelete(req.user.id, req.params.id)
     .then((todo) => {
       if (todo.length === 1) {
         return res.json(RespondWith.resource(todo));
       }
       return res.status(404).json(RespondWith.notFound404(req));
-    })
-    .catch((err) => {
-      next(err);
-    });
-});
-
-// DELETE /api/v1/todos/:id
-router.delete('/:id', (req, res, next) => {
-  Todo
-    .delete(req.user.id, req.params.id)
-    .then((deletedTodo) => {
-      if (deletedTodo.length > 0) {
-        return res.status(204).send();
-      }
-      return res.status(404).send();
     })
     .catch((err) => {
       next(err);

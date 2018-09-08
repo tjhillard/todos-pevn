@@ -1,7 +1,7 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../controllers/UserController');
+const User = require('./UserController');
 const RespondWith = require('../services/response-service');
 
 const jwtSecret = process.env.JWT_TOKEN_SECRET;
@@ -34,8 +34,7 @@ class AuthService {
               });
             }
           });
-        })
-        .catch((err) => {
+        }).catch((err) => {
           reject(RespondWith.internal500(err));
         });
     });

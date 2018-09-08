@@ -7,7 +7,12 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "start": "node server/bin/www",
-    "start:dev": "NODE_ENV=development nodemon server/bin/www"
+    "start:dev": "NODE_ENV=development nodemon server/bin/www",
+    "migrate:latest:test": "NODE_ENV=test knex migrate:latest",
+    "migrate:rollback:test": "NODE_ENV=test knex migrate:rollback",
+    "seed:test": "NODE_ENV=test knex seed:run",
+    "seed:dev": "NODE_ENV=development knex seed:run",
+    "test:api": "jest test/spec/api --env=node"
   },
   "dependencies": {
     "axios": "^0.18.0",

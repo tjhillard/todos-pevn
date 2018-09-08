@@ -5,6 +5,7 @@ exports.up = (knex, Promise) => {
       table.increments();
       table.text('email').notNullable();
       table.text('password').notNullable();
+      table.boolean('deleted').defaultTo(false);
       table.timestamps(true, true);
       table.unique('email');
     }),
@@ -15,6 +16,7 @@ exports.up = (knex, Promise) => {
       table.integer('user_id').references('id').inTable('user').notNullable();
       table.text('description').notNullable();
       table.boolean('completed').defaultTo(false);
+      table.boolean('deleted').defaultTo(false);
       table.timestamps(true, true);
     }),
   ]);
@@ -22,7 +24,7 @@ exports.up = (knex, Promise) => {
 
 exports.down = (knex, Promise) => {
   return Promise.all([
-    knex.schema.dropTable('user'),
     knex.schema.dropTable('todo'),
+    knex.schema.dropTable('user'),
   ]);
 };

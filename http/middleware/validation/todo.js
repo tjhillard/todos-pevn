@@ -15,9 +15,14 @@ exports.newTodoValidator = (req, res, next) => {
   next();
 };
 
-exports.completedTodoValidator = (req, res, next) => {
+exports.updateTodoValidator = (req, res, next) => {
+  if (!req.body.description && typeof req.body.completed === 'undefined') {
+    return res.status(400).json(Response.badRequest400({}));
+  }
+
   const schema = Joi.object().keys({
-    completed: Joi.boolean().required(),
+    description: Joi.string(),
+    completed: Joi.boolean(),
   });
 
   // valid request body?
