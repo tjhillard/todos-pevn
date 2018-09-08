@@ -34,7 +34,8 @@ class AuthService {
               });
             }
           });
-        }).catch((err) => {
+        })
+        .catch((err) => {
           reject(RespondWith.internal500(err));
         });
     });

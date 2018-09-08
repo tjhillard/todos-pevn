@@ -48,8 +48,8 @@ class ResponseService {
 
   /**
   *
-  * @param {Request=} req
   * @param {any=} details
+  * @param {string=} message
   */
   badRequest400(details, message) {
     return {
