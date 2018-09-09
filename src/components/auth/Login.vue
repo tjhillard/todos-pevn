@@ -33,12 +33,15 @@
         ></v-text-field>
         <v-btn block color="success" type="submit">Log In</v-btn>
       </form>
+      <router-link tag="a" to="/signup">
+        Don't have an account yet?
+      </router-link>
     </v-flex>
   </div>
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapActions } from 'vuex';
 import AuthApi from '@/services/api/auth-api-service';
 
 export default {
@@ -53,8 +56,8 @@ export default {
     };
   },
   methods: {
-    ...mapMutations([
-      'SET_USER_TOKEN',
+    ...mapActions([
+      'setToken',
     ]),
     attemptLogin() {
       this.errorMessage = '';
@@ -63,7 +66,7 @@ export default {
         .then((response) => {
           if (!response.data.error) {
             localStorage.setItem('token', response.data.token);
-            this.SET_USER_TOKEN(response.data.token);
+            this.setToken(response.data.token);
             this.$router.push({ path: '/' });
             return;
           }

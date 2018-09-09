@@ -7,9 +7,9 @@
         <router-link tag="v-toolbar-title" to="/" class="link">PEVN Todos</router-link>
         <v-spacer></v-spacer>
         <v-toolbar-items class="hidden-sm-and-down">
-          <v-btn v-if="!userToken" class="nav-link" to="/login" flat>Log In</v-btn>
-          <v-btn v-if="!userToken" class="nav-link" to="/signup" flat>Sign Up</v-btn>
-          <v-btn v-if="userToken" class="nav-link" flat @click="logout">Logout</v-btn>
+          <v-btn v-if="!isAuth" class="nav-link" to="/login" flat>Log In</v-btn>
+          <v-btn v-if="!isAuth" class="nav-link" to="/signup" flat>Sign Up</v-btn>
+          <v-btn v-if="isAuth" class="nav-link" flat @click="logout">Logout</v-btn>
         </v-toolbar-items>
       </v-toolbar>
        <v-navigation-drawer
@@ -64,7 +64,7 @@ export default {
   },
   computed: {
     ...mapState([
-      'userToken',
+      'isAuth',
     ]),
   },
   mounted() {

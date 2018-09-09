@@ -41,7 +41,7 @@ class ResponseService {
       error: true,
       status: 500,
       name: 'InternalServerError',
-      message: 'Something wrong happened. Please try again later.',
+      message: 'Something wrong happened. Please try again.',
       details,
     };
   }
@@ -56,7 +56,7 @@ class ResponseService {
       error: true,
       status: 400,
       name: 'BadRequest',
-      message: message || 'The request is invalid',
+      message: message || 'The request data is invalid.',
       details,
     };
   }
@@ -70,7 +70,7 @@ class ResponseService {
       error: true,
       status: 404,
       name: 'NotFound',
-      message: 'Unable to find resource with provided parameters',
+      message: 'Unable to find resource with provided parameters.',
       details: {
         url: req.originalUrl,
         params: req.params,

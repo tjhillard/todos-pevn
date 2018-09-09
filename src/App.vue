@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapActions } from 'vuex';
 import Navbar from '@/components/global/Navbar.vue';
 
 export default {
@@ -16,14 +16,14 @@ export default {
     Navbar,
   },
   methods: {
-    ...mapMutations([
-      'SET_USER_TOKEN',
+    ...mapActions([
+      'setToken',
     ]),
   },
   beforeMount() {
     const localToken = localStorage.getItem('token');
     if (localToken) {
-      this.SET_USER_TOKEN(localToken);
+      this.setToken(localToken);
     }
   },
 };
