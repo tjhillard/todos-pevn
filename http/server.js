@@ -4,12 +4,14 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const helmet = require('helmet');
+const history = require('connect-history-api-fallback');
 
 const authRouter = require('./routes/auth');
 const todosRouter = require('./routes/todos');
 
 const app = express();
 
+app.use(history());
 app.use(logger('dev'));
 app.use(helmet());
 app.use(express.json());
@@ -48,7 +50,7 @@ app.use((err, req, res, next) => {
   }
 });
 // unknown error fallback
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   console.error(err);
   res.status(err.status || 500);
   res.json({

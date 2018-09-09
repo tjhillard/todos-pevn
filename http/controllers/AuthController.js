@@ -19,6 +19,7 @@ class AuthService {
           };
           User.create(user).then((id) => {
             if (id) {
+              user.id = id;
               user.password = undefined; // To prevent the password from being part of the jwt payload
               jwt.sign(user, jwtSecret, jwtSignatureOptions, (err, token) => {
                 if (err) {

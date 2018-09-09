@@ -1,12 +1,34 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app id="app">
+    <v-container fluid class="pa-0">
+      <Navbar />
+      <router-view/>
+    </v-container>
+  </v-app>
 </template>
+
+<script>
+import { mapMutations } from 'vuex';
+import Navbar from '@/components/global/Navbar.vue';
+
+export default {
+  components: {
+    Navbar,
+  },
+  methods: {
+    ...mapMutations([
+      'SET_USER_TOKEN',
+    ]),
+  },
+  beforeMount() {
+    const localToken = localStorage.getItem('token');
+    if (localToken) {
+      this.SET_USER_TOKEN(localToken);
+    }
+  },
+};
+</script>
+
 
 <style lang="scss">
 #app {
@@ -15,15 +37,5 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
 }
 </style>
