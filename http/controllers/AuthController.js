@@ -79,6 +79,36 @@ class AuthService {
         });
     });
   }
+
+  resetPassword(email) {
+    console.log(email);
+    return new Promise((resolve, reject) => {
+      User
+        .getOneByEmail(email)
+        .then((user) => {
+          if (user) {
+            user.password = undefined;
+            jwt.sign(user, jwtSecret, jwtSignatureOptions, (err, token) => {
+              if (err) {
+                reject(RespondWith.internal500(err));
+              }
+              if (token) {
+                resolve({
+                  id: user.id,
+                  token,
+                });
+              }
+              reject(RespondWith.internal500()); // fallback
+            });
+          } else {
+            reject(RespondWith.badRequest400({}, 'Could not find a user with provided email address in our system.'));
+          }
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
 }
 
 module.exports = new AuthService();

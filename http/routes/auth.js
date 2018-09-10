@@ -1,6 +1,7 @@
 const express = require('express');
 const { loginValidator, signUpValidator } = require('../middleware/validation/auth');
 const Auth = require('../controllers/AuthController');
+const Mailer = require('../services/mailer-service');
 
 const router = express.Router();
 
@@ -14,9 +15,10 @@ router.post('/signup', signUpValidator, (req, res, next) => {
     .signup(req.body.email, req.body.password)
     .then((signUpResponse) => {
       res.json(signUpResponse);
+      Mailer.sendWelcomeEmail(req.body.email);
     })
     .catch((err) => {
-      res.status(err.status).json(err);
+      res.status(err.status || 500).json(err);
     });
 });
 
@@ -32,7 +34,19 @@ router.post('/login', loginValidator, (req, res, next) => {
       res.json(loginResponse);
     })
     .catch((err) => {
-      res.status(err.status).json(err);
+      res.status(err.status || 500).json(err);
+    });
+});
+
+router.post('/forgot_password', (req, res, next) => {
+  Auth
+    .resetPassword(req.body.email)
+    .then((payload) => {
+      res.status(200).send();
+      Mailer.sendResetPasswordEmail(req.body.email, payload.token, req.headers.host);
+    })
+    .catch((err) => {
+      res.status(err.status || 500).json(err);
     });
 });
 

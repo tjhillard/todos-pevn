@@ -31,7 +31,7 @@
           color="dark"
           type="password"
         ></v-text-field>
-        <v-btn block color="success" type="submit">Sign Up</v-btn>
+        <v-btn block color="primary" type="submit">Sign Up</v-btn>
       </form>
       <router-link tag="a" to="/login">
         Already have an account?

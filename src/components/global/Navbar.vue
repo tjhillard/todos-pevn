@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   name: 'Navbar',
@@ -77,19 +77,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'logout',
-    ]),
+    logout() {
+      this.$store.dispatch('logout');
+      this.$router.push('/login');
+    },
     onResize() {
       this.isMobile = window.innerWidth < 700;
-    },
-  },
-  watch: {
-    searchQuery(newVal) {
-      if (this.$route !== '/gallery') {
-        this.$router.push({ path: 'gallery' });
-      }
-      this.$root.$emit('searchQueryUpdated', newVal);
     },
   },
 };

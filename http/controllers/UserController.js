@@ -1,4 +1,5 @@
 const knex = require('../knex');
+const bcrypt = require('bcrypt');
 
 class UserController {
   getOneByEmail(email) {
@@ -9,6 +10,14 @@ class UserController {
     return knex('user').insert(user, 'id').then((ids) => {
       return ids[0];
     });
+  }
+
+  updatePassword(userId, password) {
+    console.log(userId, password);
+    return knex('user')
+      .where('id', userId)
+      .where('deleted', false)
+      .update({ password: bcrypt.hashSync(password, 10) }, '*');
   }
 }
 

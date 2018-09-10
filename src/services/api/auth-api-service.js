@@ -2,24 +2,34 @@ import axios from 'axios';
 
 class AuthApi {
   constructor() {
-    axios.defaults.baseURL = '/api/v1/auth';
-    axios.defaults.headers = {
-      'Content-Type': 'application/json',
-    };
+    this.http = axios.create({
+      baseURL: '/api/v1/auth',
+      timeout: 10000,
+      headers: { 'Content-Type': 'application/json' },
+      validateStatus: false,
+    });
   }
 
   signup(user) {
-    return axios.request('/signup', {
+    return this.http.request('/signup', {
       method: 'post',
       data: user,
     });
   }
 
   login(user) {
-    return axios.request('/login', {
+    return this.http.request('/login', {
       method: 'post',
       data: user,
-      validateStatus: false,
+    });
+  }
+
+  requestResetPasswordEmail(email) {
+    return this.http.request('/forgot_password', {
+      method: 'post',
+      data: {
+        email,
+      },
     });
   }
 }

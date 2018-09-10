@@ -13,6 +13,13 @@
       >
         {{ errorMessage }}
       </v-alert>
+      <v-alert
+        :value="true"
+        type="success"
+        v-if="userDidResetPassword"
+      >
+        Your password has been successfully reset. Please login to reauthenticate.
+      </v-alert>
       <form class="mt-3" @submit.prevent="attemptLogin">
         <!-- email -->
         <v-text-field
@@ -31,8 +38,11 @@
           color="dark"
           type="password"
         ></v-text-field>
-        <v-btn block color="success" type="submit">Log In</v-btn>
+        <v-btn block color="primary" type="submit">Log In</v-btn>
       </form>
+      <router-link tag="a" to="/forgot_password">
+        Forgot your passsowrd?
+      </router-link> |
       <router-link tag="a" to="/signup">
         Don't have an account yet?
       </router-link>
@@ -53,7 +63,13 @@ export default {
         password: '',
       },
       errorMessage: '',
+      userDidResetPassword: false,
     };
+  },
+  mounted() {
+    if (this.$route.query.reset) {
+      this.userDidResetPassword = true;
+    }
   },
   methods: {
     ...mapActions([

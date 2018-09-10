@@ -7,6 +7,7 @@ const helmet = require('helmet');
 const history = require('connect-history-api-fallback');
 
 const authRouter = require('./routes/auth');
+const userRouter = require('./routes/user');
 const todosRouter = require('./routes/todos');
 
 const app = express();
@@ -20,7 +21,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../dist/')));
 
 /* API Middleware */
-app.use(jwt({ secret: process.env.JWT_TOKEN_SECRET }).unless({ path: ['/api/v1/auth/login', '/api/v1/auth/signup'] }));
+app.use(jwt({ secret: process.env.JWT_TOKEN_SECRET }).unless({
+  path: [
+    '/api/v1/auth/login',
+    '/api/v1/auth/signup',
+    '/api/v1/auth/forgot_password',
+  ],
+}));
 app.use('/api', (req, res, next) => {
   next();
 });
@@ -31,6 +38,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/users', userRouter);
 app.use('/api/v1/todos', todosRouter);
 
 /* Error Handlers */
