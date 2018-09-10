@@ -11,7 +11,6 @@ class AuthApi {
   }
 
   updatePassword(password, token) {
-    console.log(password, token);
     return this.http.request('/update_password', {
       method: 'put',
       headers: {

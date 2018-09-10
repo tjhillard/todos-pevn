@@ -13,7 +13,6 @@ class UserController {
   }
 
   updatePassword(userId, password) {
-    console.log(userId, password);
     return knex('user')
       .where('id', userId)
       .where('deleted', false)

@@ -12,8 +12,5 @@ export default {
   components: {
     ResetPassword,
   },
-  mounted() {
-    console.log(this.$route.query.token);
-  },
 };
 </script>
