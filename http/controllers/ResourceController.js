@@ -6,6 +6,12 @@ module.exports = class ResourceController {
     this.table = table;
   }
 
+  /**
+   *
+   * @param {number} userId - ID of the user associated with the resource
+   * @param {any?} options - Object of options for customizing the response format
+   * @returns {any[]} Array of matching resource objects
+   */
   getAll(userId, options = {}) {
     const limit = clamp(options.per_page, 0, Math.max() * -1) || 25;
     return knex(this.table)
@@ -14,6 +20,12 @@ module.exports = class ResourceController {
       .limit(limit);
   }
 
+  /**
+   *
+   * @param {number} userId - ID of the user associated with the resource
+   * @param {any?} options - Object of options for customizing the response format
+   * @returns {any[]} Array of matching resource objects
+   */
   paginate(userId, options = {}) {
     const limit = clamp(options.per_page, 0, Math.max() * -1) || 25;
     const pageNumber = clamp(options.page_number, 1, Math.max() * -1) || 1;
@@ -26,6 +38,12 @@ module.exports = class ResourceController {
       .limit(limit);
   }
 
+  /**
+   * =
+   * @param {number} userId - ID of the user associated with the resource
+   * @param {number} id - ID of the resource
+   * @returns {any} Object of the matching resource
+   */
   getById(userId, id) {
     return knex(this.table)
       .where('user_id', userId)
@@ -34,10 +52,22 @@ module.exports = class ResourceController {
       .first();
   }
 
+  /**
+   *
+   * @param {any} resource - Object for the resource to insert
+   * @returns {any} Object of the created resource
+   */
   create(resource) {
     return knex(this.table).insert(resource, '*');
   }
 
+  /**
+   *
+   * @param {number} userId - ID of the user associated with the resource
+   * @param {number} id - ID of the resource
+   * @param {any} resource - Object for the resource to insert
+   * @returns {any} Object of the updated resource
+   */
   update(userId, id, resource) {
     return knex(this.table)
       .where('user_id', userId)
@@ -46,6 +76,12 @@ module.exports = class ResourceController {
       .update(resource, '*');
   }
 
+  /**
+   *
+   * @param {number} userId - ID of the user associated with the resource
+   * @param {number} id - ID of the resource
+   * @returns {any} Object of the hard deleted resource
+   */
   hardDelete(userId, id) {
     return knex(this.table)
       .where('user_id', userId)
@@ -55,8 +91,9 @@ module.exports = class ResourceController {
 
   /**
    *
-   * @param {number} userId
-   * @param {number} id
+   * @param {number} userId - ID of the user associated with the resource
+   * @param {number} id - ID of the resource
+   * @returns {any} Object of the soft deleted resource
    */
   softDelete(userId, id) {
     return knex(this.table)
@@ -67,10 +104,11 @@ module.exports = class ResourceController {
 
   /**
    *
-   * @param {number} userId
-   * @param {number} id
+   * @param {number} userId - ID of the user associated with the resource
+   * @param {number} id - ID of the resource
+   * @returns {any} Object of the undeleted resource
    */
-  unDelete(userId, id) {
+  undelete(userId, id) {
     return knex(this.table)
       .where('user_id', userId)
       .where('id', id)
