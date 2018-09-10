@@ -60,8 +60,12 @@ export default {
               this.$router.push({ path: '/login', query: { reset: true } });
               return;
             }
-            this.errorMessage = res.data.message;
             this.clearFields();
+            if (res.status === 401) {
+              this.errorMessage = 'Token is either expired or invalid.';
+              return;
+            }
+            this.errorMessage = res.data.message;
           })
           .catch((err) => {
             this.errorMessage = 'Something went wrong. Please try again.';

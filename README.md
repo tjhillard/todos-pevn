@@ -18,6 +18,8 @@ A simple todo application built for learning purposes.
 * User authentication & authorization with JWT
 * RESTful JSON API
 * Progressive Web App Support
+* Reset/forgot password functionality
+* Emails with SendGrid transactional email templates
 * e2e testing with Cypress
 * Unit & API integration tests with Jest
 * Test coverage tracking with Istanbul

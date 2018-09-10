@@ -81,14 +81,13 @@ class AuthService {
   }
 
   resetPassword(email) {
-    console.log(email);
     return new Promise((resolve, reject) => {
       User
         .getOneByEmail(email)
         .then((user) => {
           if (user) {
             user.password = undefined;
-            jwt.sign(user, jwtSecret, jwtSignatureOptions, (err, token) => {
+            jwt.sign(user, jwtSecret, { expiresIn: '10m' }, (err, token) => {
               if (err) {
                 reject(RespondWith.internal500(err));
               }

@@ -6,6 +6,7 @@ class AuthApi {
       baseURL: '/api/v1/users',
       timeout: 10000,
       headers: { 'Content-Type': 'application/json' },
+      validateStatus: false,
     });
   }
 
