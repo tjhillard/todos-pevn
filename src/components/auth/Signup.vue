@@ -49,8 +49,8 @@ export default {
   data() {
     return {
       user: {
-        email: '',
-        password: '',
+        email: '', // Bound to email input
+        password: '', // Bound to password input
       },
       errorMessage: '',
     };
@@ -62,25 +62,26 @@ export default {
     attemptSignup() {
       AuthApi
         .signup(this.user)
-        .then((response) => {
-          localStorage.setItem('token', response.data.token);
-          this.setToken(response.data.token);
-          this.$router.push({ path: '/' });
+        .then((res) => {
+          if (res.status === 200 && !res.data.error) {
+            localStorage.setItem('token', res.data.token);
+            this.setToken(res.data.token);
+            this.$router.push({ path: '/' });
+            return;
+          }
+          this.displayFallbackError();
         })
         .catch((err) => {
-          const error = err.response ? err.response.data : {};
-          if (error.message) {
-            this.errorMessage = error.message;
-          } else {
-            this.errorMessage = 'Something went wrong. Please try again.';
-          }
-          this.user.password = '';
+          this.displayFallbackError();
         });
+    },
+    displayFallbackError() {
+      this.errorMessage = 'Something went wrong. Please try again.';
+      this.user.password = '';
     },
   },
 };
 </script>
 
 <style lang="scss">
-
 </style>

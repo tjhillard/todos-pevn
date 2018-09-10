@@ -41,10 +41,10 @@ export default {
   data() {
     return {
       user: {
-        email: '',
+        email: '', // Bound to email input
       },
       errorMessage: '',
-      requestWasSuccess: false,
+      requestWasSuccess: false, // When true, display success alert
     };
   },
   methods: {
@@ -53,19 +53,16 @@ export default {
         AuthApi
           .requestResetPasswordEmail(this.user.email)
           .then((res) => {
-            console.log(res);
             if (!res.data.error && res.status === 200) {
               this.requestWasSuccess = true;
               this.errorMessage = res.data.message;
               this.clearFields();
               return;
             }
-            this.errorMessage = 'Something went wrong. Please try again.';
-            this.clearFields();
+            this.displayFallbackError();
           })
           .catch((err) => {
-            this.errorMessage = 'Something went wrong. Please try again.';
-            this.clearFields();
+            this.displayFallbackError();
           });
       } else {
         this.errorMessage = 'Password confirmation does not match.';
@@ -75,10 +72,13 @@ export default {
     clearFields() {
       this.user.email = '';
     },
+    displayFallbackError() {
+      this.errorMessage = 'Something went wrong. Please try again.';
+      this.clearFields();
+    },
   },
 };
 </script>
 
 <style lang="scss">
-
 </style>

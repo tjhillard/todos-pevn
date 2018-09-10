@@ -43,8 +43,8 @@ export default {
   data() {
     return {
       user: {
-        password: '',
-        confirmPassword: '',
+        password: '', // Bound to password input
+        confirmPassword: '', // Bound to confirm password input
       },
       errorMessage: '',
     };
@@ -55,8 +55,7 @@ export default {
         UserApi
           .updatePassword(this.user.password, this.$route.query.token)
           .then((res) => {
-            console.log(res);
-            if (!res.data.error) {
+            if (!res.data.error && res.status === 200) {
               this.$router.push({ path: '/login', query: { reset: true } });
               return;
             }
@@ -85,5 +84,4 @@ export default {
 </script>
 
 <style lang="scss">
-
 </style>

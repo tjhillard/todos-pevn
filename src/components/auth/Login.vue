@@ -59,11 +59,11 @@ export default {
   data() {
     return {
       user: {
-        email: '',
-        password: '',
+        email: '', // Bound to email input
+        password: '', // Bound to password input
       },
       errorMessage: '',
-      userDidResetPassword: false,
+      userDidResetPassword: false, // When this is true, show the message alert informing user of state
     };
   },
   mounted() {
@@ -79,31 +79,29 @@ export default {
       this.errorMessage = '';
       AuthApi
         .login(this.user)
-        .then((response) => {
-          if (!response.data.error) {
-            localStorage.setItem('token', response.data.token);
-            this.setToken(response.data.token);
+        .then((res) => {
+          if (!res.data.error && res.status === 200) {
+            localStorage.setItem('token', res.data.token);
+            this.setToken(res.data.token);
             this.$router.push({ path: '/' });
             return;
           }
-          console.log(response);
-          if (response.status === 400) {
-            this.errorMessage = response.data.message;
+          if (res.status === 400) {
+            this.errorMessage = res.data.message;
             return;
           }
-          this.errorMessage = 'Something went wrong. Please try again';
-          this.user.password = '';
+          this.displayFallbackError();
         })
         .catch((err) => {
-          console.log(err);
-          this.errorMessage = 'Something went wrong. Please try again.';
-          this.user.password = '';
+          this.displayFallbackError();
         });
+    },
+    displayFallbackError() {
+      this.errorMessage = 'Something went wrong. Please try again.';
+      this.user.password = '';
     },
   },
 };
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>
