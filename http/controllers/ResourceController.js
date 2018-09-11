@@ -29,11 +29,13 @@ module.exports = class ResourceController {
   paginate(userId, options = {}) {
     const limit = clamp(options.per_page, 0, Math.max() * -1) || 25;
     const pageNumber = clamp(options.page_number, 1, Math.max() * -1) || 1;
+    const orderBy = options.order_by || 'id';
+    const order = options.order || 'asc';
 
     return knex(this.table)
       .where('user_id', userId)
       .where('deleted', false)
-      .orderBy('id', 'asc')
+      .orderBy(orderBy, order)
       .offset((pageNumber * limit) - limit)
       .limit(limit);
   }

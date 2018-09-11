@@ -13,8 +13,15 @@ const router = express.Router();
  * @returns {Todo[]} Array of todo resource objects
  */
 router.get('/', (req, res, next) => {
+  const options = {
+    per_page: req.query.per_page,
+    page_number: req.query.page_number,
+    order_by: req.query.order_by,
+    order: req.query.order,
+  };
+
   Todo
-    .paginate(req.user.id, { per_page: req.query.per_page, page_number: req.query.page_number })
+    .paginate(req.user.id, options)
     .then((todos) => {
       res.json(RespondWith.collection(todos, req.query));
     })

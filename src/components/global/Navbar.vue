@@ -1,7 +1,7 @@
 <template>
   <div class="navbar-wrapper">
     <v-layout wrap>
-      <v-toolbar flat color="white">
+      <v-toolbar flat>
         <v-toolbar-side-icon class="hidden-md-and-up" @click="drawer = !drawer">
         </v-toolbar-side-icon>
         <router-link tag="v-toolbar-title" to="/" class="link">PEVN Todos</router-link>

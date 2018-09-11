@@ -17,6 +17,9 @@ export default new Vuex.Store({
       }
       return null;
     },
+    jwt(state, getters) {
+      return state.jwt;
+    },
   },
   mutations: {
     SET_TOKEN_IN_STORAGE(state, token) {
