@@ -42,8 +42,11 @@ router.post('/forgot_password', (req, res, next) => {
   Auth
     .resetPassword(req.body.email)
     .then((payload) => {
-      res.status(200).send();
-      Mailer.sendResetPasswordEmail(req.body.email, payload.token, req.headers.host);
+      Mailer
+        .sendResetPasswordEmail(req.body.email, payload.token, req.headers.host, (err, sgRes) => {
+          if (!err) return res.status(200).send();
+          return res.status(500).json(err);
+        });
     })
     .catch((err) => {
       res.status(err.status || 500).json(err);

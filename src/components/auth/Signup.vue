@@ -64,7 +64,6 @@ export default {
         .signup(this.user)
         .then((res) => {
           if (res.status === 200 && !res.data.error) {
-            localStorage.setItem('token', res.data.token);
             this.setToken(res.data.token);
             this.$router.push({ path: '/' });
             return;

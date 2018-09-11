@@ -5,6 +5,7 @@ class ResponseService {
   /**
    *
    * @param {any} data
+   * @param {any?} meta
    */
   collection(data, meta = {}) {
     return {
@@ -32,10 +33,12 @@ class ResponseService {
     };
   }
 
-  /**
-   *  ERRORS
-   */
+  // ----- ERRORS -----
 
+  /**
+   *
+   * @param {any=} details
+   */
   internal500(details = {}) {
     return {
       error: true,

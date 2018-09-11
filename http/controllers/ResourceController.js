@@ -99,6 +99,7 @@ module.exports = class ResourceController {
     return knex(this.table)
       .where('user_id', userId)
       .where('id', id)
+      .where('deleted', false)
       .update({ deleted: true }, '*');
   }
 

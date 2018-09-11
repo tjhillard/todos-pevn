@@ -6,7 +6,12 @@ const RespondWith = require('../services/response-service.js');
 const Todo = new ResourceController('todo');
 const router = express.Router();
 
-// GET /api/v1/todos
+
+/**
+ * GET /api/v1/todos
+ *
+ * @returns {Todo[]} Array of todo resource objects
+ */
 router.get('/', (req, res, next) => {
   Todo
     .paginate(req.user.id, { per_page: req.query.per_page, page_number: req.query.page_number })
@@ -18,7 +23,11 @@ router.get('/', (req, res, next) => {
     });
 });
 
-// GET /api/v1/todos/:id
+/**
+ * GET /api/v1/todos/:id
+ *
+ * @returns {Todo} Matched Todo resource object
+ */
 router.get('/:id', (req, res, next) => {
   Todo
     .getById(req.user.id, req.params.id)
@@ -33,7 +42,11 @@ router.get('/:id', (req, res, next) => {
     });
 });
 
-// POST /api/v1/todos
+/**
+ * POST /api/v1/todos
+ *
+ * @returns {Todo} Newly created Todo resource object
+ */
 router.post('/', newTodoValidator, (req, res, next) => {
   Todo
     .create({
@@ -48,7 +61,11 @@ router.post('/', newTodoValidator, (req, res, next) => {
     });
 });
 
-// PUT /api/v1/todos/:id
+/**
+ * PUT /api/v1/todos/:id
+ *
+ * @returns {Todo} Newly updated Todo resource object
+ */
 router.put('/:id', updateTodoValidator, (req, res, next) => {
   const newTodoData = {};
   if (req.body.description) {
@@ -70,13 +87,17 @@ router.put('/:id', updateTodoValidator, (req, res, next) => {
     });
 });
 
-// DELETE /api/v1/todos/:id
+/**
+ * DELETE /api/v1/todos/:id
+ *
+ * @returns {Todo} Empty body with 204 response
+ */
 router.delete('/:id', (req, res, next) => {
   Todo
     .softDelete(req.user.id, req.params.id)
     .then((todo) => {
       if (todo.length === 1) {
-        return res.json(RespondWith.resource(todo));
+        return res.status(204).send();
       }
       return res.status(404).json(RespondWith.notFound404(req));
     })

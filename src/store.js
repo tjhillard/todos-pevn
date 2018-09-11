@@ -21,6 +21,7 @@ export default new Vuex.Store({
   mutations: {
     SET_TOKEN_IN_STORAGE(state, token) {
       state.jwt = token;
+      localStorage.setItem('token', token);
       state.isAuth = true;
     },
     DELETE_USER_TOKEN(state) {

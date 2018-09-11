@@ -1,8 +1,7 @@
 <template>
   <div class="home mt-5">
     <div v-if="isAuth">
-      <h1>Welcome valued user!</h1>
-      <p>{{ user }}</p>
+      <h1>Welcome {{ user.email }}!</h1>
       <v-btn color="success" to="/todos">
         Manage Your Todos
       </v-btn>

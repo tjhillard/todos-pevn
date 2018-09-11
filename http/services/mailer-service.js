@@ -5,7 +5,6 @@ sendgrid.setApiKey(process.env.SEND_GRID_KEY);
 class Mailer {
   // Welcome a new user
   sendWelcomeEmail(toEmail) {
-    if (!toEmail) { throw new Error('Trying to send email without to field'); }
     const message = {
       to: toEmail,
       from: 'no-reply@tjhillard.com',
@@ -20,8 +19,7 @@ class Mailer {
   }
 
   // Reset password link
-  sendResetPasswordEmail(toEmail, token, host) {
-    if (!toEmail) { throw new Error('Trying to send email without to field'); }
+  sendResetPasswordEmail(toEmail, token, host, callback) {
     const message = {
       to: toEmail,
       from: 'no-reply@tjhillard.com',
@@ -32,11 +30,9 @@ class Mailer {
       },
     };
 
-    return sendgrid
-      .send(message)
-      .catch((err) => {
-        console.error(err.response.body);
-      });
+    return sendgrid.send(message, (err, res) => {
+      callback(err, res);
+    });
   }
 }
 

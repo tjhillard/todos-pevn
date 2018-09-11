@@ -8,6 +8,13 @@ const jwtSecret = process.env.JWT_TOKEN_SECRET;
 const jwtSignatureOptions = { expiresIn: '7d' };
 
 class AuthService {
+  /**
+   *
+   * @param {string} email
+   * @param {string} password
+   * @returns Promise
+   * @description Creates new User resource, and returns a jwt
+   */
   signup(email, password) {
     return new Promise((resolve, reject) => {
       // hash password
@@ -41,6 +48,13 @@ class AuthService {
     });
   }
 
+  /**
+   *
+   * @param {string} email
+   * @param {string} password
+   * @returns Promise
+   * @description Attempts to find a matching email/password and retunrs a jwt for matched user
+   */
   login(email, password) {
     return new Promise((resolve, reject) => {
       User.getOneByEmail(email)
@@ -80,6 +94,12 @@ class AuthService {
     });
   }
 
+  /**
+   *
+   * @param {string} email
+   * @returns Promise
+   * @description Returns a fast expiring jwt for a user by provided email
+   */
   resetPassword(email) {
     return new Promise((resolve, reject) => {
       User
