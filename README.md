@@ -1,4 +1,4 @@
-# todos-pevn-stack
+# todos-pevn
 
 <p align="center">
   <img src="https://i.gyazo.com/52ae65b02cbbbd7a04033c4bf4f15444.png" width="300px"/><br>
