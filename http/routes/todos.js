@@ -52,6 +52,10 @@ router.get('/:id', (req, res, next) => {
 /**
  * POST /api/v1/todos
  *
+ * body: {
+ *  description: "Feed my cat"
+ * }
+ *
  * @returns {Todo} Newly created Todo resource object
  */
 router.post('/', newTodoValidator, (req, res, next) => {
@@ -70,6 +74,11 @@ router.post('/', newTodoValidator, (req, res, next) => {
 
 /**
  * PUT /api/v1/todos/:id
+ *
+ * body: {
+ *  description?: "Feed my cat",
+ *  completed?: true
+ * }
  *
  * @returns {Todo} Newly updated Todo resource object
  */

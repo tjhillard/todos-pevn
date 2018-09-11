@@ -8,7 +8,22 @@ class UserController {
    * @returns {any} Object of matched user resource
    */
   getOneByEmail(email) {
-    return knex('user').where('email', email).first();
+    return knex('user')
+      .where('email', email)
+      .where('deleted', false)
+      .first();
+  }
+
+  /**
+   *
+   * @param {number} id - ID of the existing user
+   * @returns {any} Object of matched user resource
+   */
+  getById(id) {
+    return knex('user')
+      .where('id', id)
+      .where('deleted', false)
+      .first();
   }
 
   /**
@@ -16,9 +31,11 @@ class UserController {
    * @param {any} user - User object to create
    */
   create(user) {
-    return knex('user').insert(user, 'id').then((ids) => {
-      return ids[0];
-    });
+    return knex('user')
+      .insert(user, 'id')
+      .then((ids) => {
+        return ids[0];
+      });
   }
 
   /**

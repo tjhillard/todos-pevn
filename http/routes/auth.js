@@ -5,11 +5,17 @@ const Mailer = require('../services/mailer-service');
 
 const router = express.Router();
 
-// --- POST /api/v1/auth/signup ---
-// body: {
-//   email: 'foo@bar.com',
-//   password: 'MoreThan6Char$'
-// }
+/**
+ * POST /api/v1/auth/signup
+ *
+ * body: {
+ *  email: "foo@bar.com",
+ *  password: "MoreThan6Chars"
+ * }
+ *
+ * @returns {any} The ID of the user and a token
+ * @description Registers new user in database and sends them welcome email
+ */
 router.post('/signup', signUpValidator, (req, res, next) => {
   Auth
     .signup(req.body.email, req.body.password)
@@ -22,11 +28,17 @@ router.post('/signup', signUpValidator, (req, res, next) => {
     });
 });
 
-// POST /api/v1/auth/login
-// body: {
-//   email: 'foo@bar.com',
-//   password: 'FooBar123!'
-// }
+/**
+ * POST /api/v1/auth/login
+ *
+ * body: {
+ *  email: "foo@bar.com",
+ *  password: "MoreThan6Chars"
+ * }
+ *
+ * @returns {any} The ID of the user and a token
+ * @description Returns a newly generated JWT for the user
+ */
 router.post('/login', loginValidator, (req, res, next) => {
   Auth
     .login(req.body.email, req.body.password)
@@ -38,6 +50,15 @@ router.post('/login', loginValidator, (req, res, next) => {
     });
 });
 
+/**
+ * POST /api/v1/auth/forgot_password
+ *
+ * body: {
+ *  email: "foo@bar.com"
+ * }
+ *
+ * @returns {} Status code 200 after email is sent
+ */
 router.post('/forgot_password', (req, res, next) => {
   Auth
     .resetPassword(req.body.email)
