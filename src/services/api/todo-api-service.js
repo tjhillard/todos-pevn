@@ -1,4 +1,5 @@
 import axios from 'axios';
+import store from '../../store';
 import HandleRefreshToken from './refresh-token-service';
 
 class TodoApi {
@@ -15,25 +16,58 @@ class TodoApi {
   getPaginatedTodos(pageNumber, token) {
     return this.http.get('/', {
       headers: {
-        authorization: `Bearer ${token}`,
+        authorization: `Bearer ${store.getters.jwt}`,
       },
       params: {
         order_by: 'created_at',
         order: 'desc',
         page_number: pageNumber || 1,
-        per_page: 10,
+        per_page: 100,
       },
     });
   }
 
-  addNewTodo(todo, token) {
+  addNewTodo(todo) {
     return this.http.request('/', {
       method: 'post',
       headers: {
-        authorization: `Bearer ${token}`,
+        authorization: `Bearer ${store.getters.jwt}`,
       },
       data: {
         description: todo,
+      },
+    });
+  }
+
+  completeTodo(todoId) {
+    return this.http.request(`/${todoId}`, {
+      method: 'put',
+      headers: {
+        authorization: `Bearer ${store.getters.jwt}`,
+      },
+      data: {
+        completed: true,
+      },
+    });
+  }
+
+  uncompleteTodo(todoId) {
+    return this.http.request(`/${todoId}`, {
+      method: 'put',
+      headers: {
+        authorization: `Bearer ${store.getters.jwt}`,
+      },
+      data: {
+        completed: false,
+      },
+    });
+  }
+
+  deleteTodo(todoId) {
+    return this.http.request(`/${todoId}`, {
+      method: 'delete',
+      headers: {
+        authorization: `Bearer ${store.getters.jwt}`,
       },
     });
   }

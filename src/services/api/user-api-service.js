@@ -1,4 +1,5 @@
 import axios from 'axios';
+import HandleRefreshToken from './refresh-token-service';
 
 class AuthApi {
   constructor() {
@@ -8,6 +9,7 @@ class AuthApi {
       headers: { 'Content-Type': 'application/json' },
       validateStatus: false,
     });
+    this.http.interceptors.response.use(response => HandleRefreshToken(response));
   }
 
   updatePassword(password, token) {
