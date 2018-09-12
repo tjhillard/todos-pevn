@@ -5,7 +5,7 @@ const User = require('./UserController');
 const RespondWith = require('../services/response-service');
 
 const jwtSecret = process.env.JWT_TOKEN_SECRET;
-const jwtSignatureOptions = { expiresIn: '10s' };
+const jwtSignatureOptions = { expiresIn: '30m' };
 
 class AuthService {
   /**
@@ -13,7 +13,7 @@ class AuthService {
    * @param {string} email
    * @param {string} password
    * @returns Promise
-   * @description Creates new User resource, and returns a jwt
+   * @description Creates new User resource, and returns a jwt.
    */
   signup(email, password) {
     return new Promise((resolve, reject) => {
@@ -53,7 +53,7 @@ class AuthService {
    * @param {string} email
    * @param {string} password
    * @returns Promise
-   * @description Attempts to find a matching email/password and retunrs a jwt for matched user
+   * @description Attempts to find a matching email/password and retunrs a jwt for matched user.
    */
   login(email, password) {
     return new Promise((resolve, reject) => {
@@ -94,13 +94,20 @@ class AuthService {
     });
   }
 
+  /**
+   *
+   * @param {string} oldToken The expired jwt that is request a new jwt
+   * @returns {Promise<any>}
+   * @description Attemps to generate a new jwt for a user with an expired one.
+   */
   getRefreshToken(oldToken) {
     return new Promise((resolve, reject) => {
       jwt.verify(oldToken, jwtSecret, (err, decoded) => {
         if (err) {
           if (err.message === 'jwt expired') {
             const oldTokenPayload = jwt.decode(oldToken);
-            jwt.sign({ id: oldTokenPayload.id, email: oldTokenPayload.email }, jwtSecret, jwtSignatureOptions, (signErr, newToken) => {
+            const newTokenPayload = { id: oldTokenPayload.id, email: oldTokenPayload.email };
+            jwt.sign(newTokenPayload, jwtSecret, jwtSignatureOptions, (signErr, newToken) => {
               if (signErr) {
                 console.log(signErr);
                 reject(RespondWith.internal500(err));
@@ -124,7 +131,7 @@ class AuthService {
    *
    * @param {string} email
    * @returns Promise
-   * @description Returns a fast expiring jwt for a user by provided email
+   * @description Returns a fast expiring jwt for a user by provided email.
    */
   resetPassword(email) {
     return new Promise((resolve, reject) => {

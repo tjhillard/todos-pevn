@@ -1,6 +1,10 @@
 import axios from 'axios';
 import store from '../../store';
 
+/**
+ * @description Is given a axios response and checks if it is 401 unauthorized,
+ * if it is, request a refresh token based off of the old one.
+ */
 export default response => {
   const originalRequest = response.config;
   if (response.status === 401 && response.data.message === 'jwt expired') {

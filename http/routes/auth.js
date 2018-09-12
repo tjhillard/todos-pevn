@@ -14,7 +14,7 @@ const router = express.Router();
  * }
  *
  * @returns {any} The ID of the user and a token
- * @description Registers new user in database and sends them welcome email
+ * @description Registers new user in database and sends them welcome email.
  */
 router.post('/signup', signUpValidator, (req, res, next) => {
   Auth
@@ -37,7 +37,7 @@ router.post('/signup', signUpValidator, (req, res, next) => {
  * }
  *
  * @returns {any} The ID of the user and a token
- * @description Returns a newly generated JWT for the user
+ * @description Returns a newly generated JWT for the user.
  */
 router.post('/login', loginValidator, (req, res, next) => {
   Auth
@@ -80,6 +80,8 @@ router.post('/refresh_token', (req, res, next) => {
  * }
  *
  * @returns {} Status code 200 after email is sent
+ * @description Accepts a payload of the user email address and sends an email to them
+ * with steps on how to reset their password.
  */
 router.post('/forgot_password', (req, res, next) => {
   Auth

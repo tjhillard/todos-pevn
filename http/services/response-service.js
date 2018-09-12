@@ -5,7 +5,7 @@ class ResponseService {
   /**
    *
    * @param {any} data
-   * @param {any?} meta
+   * @param {any=} meta
    */
   collection(data, meta = {}) {
     return {

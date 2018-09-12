@@ -3,7 +3,12 @@ const sendgrid = require('@sendgrid/mail');
 sendgrid.setApiKey(process.env.SEND_GRID_KEY);
 
 class Mailer {
-  // Welcome a new user
+  /**
+   *
+   * @param {string} toEmail The recipient email address
+   * @returns {Promise}
+   * @description Sends the welcome email to new users
+   */
   sendWelcomeEmail(toEmail) {
     const message = {
       to: toEmail,
@@ -18,7 +23,13 @@ class Mailer {
       });
   }
 
-  // Reset password link
+  /**
+   *
+   * @param {string} toEmail The recipient email address
+   * @param {string} token The short duration JWT that will allow the user to change their password
+   * @param {*} host The current server host used to redirect the user regardless of current environment
+   * @param {*} callback Is called after email is sent (or send fails)
+   */
   sendResetPasswordEmail(toEmail, token, host, callback) {
     const message = {
       to: toEmail,

@@ -5,7 +5,17 @@ const { updatePasswordValidator } = require('../middleware/validation/user');
 const router = express.Router();
 
 /**
- * PUT /api/v1/auth/users/update_password
+ * GET /api/v1/users/me
+ *
+ * @returns The authenticated user resource
+ */
+router.get('/me', (req, res, next) => {
+  if (req.user) return res.json(req.user);
+  next();
+});
+
+/**
+ * PUT /api/v1/users/update_password
  *
  * @returns {User} Newly updated User resource
  */
