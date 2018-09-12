@@ -74,6 +74,9 @@ export default {
           if (!res.data.error && res.status === 200) {
             this.todos = res.data.data;
           }
+        })
+        .catch((err) => {
+          console.log(err);
         });
     },
     addTodo() {

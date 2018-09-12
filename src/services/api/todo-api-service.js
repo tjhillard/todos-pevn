@@ -1,4 +1,5 @@
 import axios from 'axios';
+import HandleRefreshToken from './refresh-token-service';
 
 class TodoApi {
   constructor() {
@@ -8,6 +9,7 @@ class TodoApi {
       headers: { 'Content-Type': 'application/json' },
       validateStatus: false,
     });
+    this.http.interceptors.response.use(response => HandleRefreshToken(response));
   }
 
   getPaginatedTodos(pageNumber, token) {

@@ -25,6 +25,7 @@ app.use(jwt({ secret: process.env.JWT_TOKEN_SECRET }).unless({
   path: [
     '/api/v1/auth/login',
     '/api/v1/auth/signup',
+    '/api/v1/auth/refresh_token',
     '/api/v1/auth/forgot_password',
   ],
 }));

@@ -23,6 +23,7 @@ module.exports = {
     'no-useless-constructor': 'off',
     'no-param-reassign': 'off',
     'max-len': ['error', { 'code': 120 }],
+    'arrow-parens': 'off',
   },
   parserOptions: {
     parser: 'babel-eslint',

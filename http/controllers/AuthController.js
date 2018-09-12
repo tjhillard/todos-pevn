@@ -5,7 +5,7 @@ const User = require('./UserController');
 const RespondWith = require('../services/response-service');
 
 const jwtSecret = process.env.JWT_TOKEN_SECRET;
-const jwtSignatureOptions = { expiresIn: '7d' };
+const jwtSignatureOptions = { expiresIn: '10s' };
 
 class AuthService {
   /**
@@ -91,6 +91,32 @@ class AuthService {
         .catch((err) => {
           reject(err);
         });
+    });
+  }
+
+  getRefreshToken(oldToken) {
+    return new Promise((resolve, reject) => {
+      jwt.verify(oldToken, jwtSecret, (err, decoded) => {
+        if (err) {
+          if (err.message === 'jwt expired') {
+            const oldTokenPayload = jwt.decode(oldToken);
+            jwt.sign({ id: oldTokenPayload.id, email: oldTokenPayload.email }, jwtSecret, jwtSignatureOptions, (signErr, newToken) => {
+              if (signErr) {
+                console.log(signErr);
+                reject(RespondWith.internal500(err));
+              }
+              if (newToken) {
+                resolve({
+                  id: oldTokenPayload.id,
+                  token: newToken,
+                });
+              }
+            });
+          }
+        } else {
+          reject(RespondWith.internal500(err));
+        }
+      });
     });
   }
 

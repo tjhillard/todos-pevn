@@ -51,6 +51,28 @@ router.post('/login', loginValidator, (req, res, next) => {
 });
 
 /**
+ * POST /api/v1/auth/refresh_token
+ *
+ * body: {
+ *  token: "users.old.jwt"
+ * }
+ *
+ * @returns {JwtToken} An object with a new jwt refresh token property
+ */
+router.post('/refresh_token', (req, res, next) => {
+  Auth
+    .getRefreshToken(req.body.token)
+    .then((token) => {
+      console.log(token);
+      res.json(token);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(err.status || 500).json(err);
+    });
+});
+
+/**
  * POST /api/v1/auth/forgot_password
  *
  * body: {
