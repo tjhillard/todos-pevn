@@ -12,6 +12,14 @@
       >
         {{ errorMessage }}
       </v-alert>
+      <v-snackbar
+        v-model="snackbar.show"
+        color="success"
+        :timeout="snackbar.timeout"
+        top
+      >
+        <v-icon color="white">{{ snackbar.icon }}</v-icon>{{ snackbar.message }}
+      </v-snackbar>
       <div class="pa-4">
         <h1>My Todos ({{ todos.length }})</h1>
         <v-text-field
@@ -44,7 +52,7 @@
             <v-btn
               depressed
               block
-              v-on:click="setFilterByOption('completed')"
+              @click="setFilterByOption('completed')"
               :class="{ accent: filterBy === 'completed' }">
               Completed
             </v-btn>
@@ -53,7 +61,7 @@
         <v-list three-line style="background-color: #fafafa;">
           <v-list-tile v-for="todo in todos" :key="todo.id">
             <v-list-tile-action>
-              <v-checkbox @change="toggleTodoCompletedness(todo.id)" v-model="todo.completed"></v-checkbox>
+              <v-checkbox @change="setTodoCompletedness(todo.id)" v-model="todo.completed"></v-checkbox>
             </v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title>{{ todo.description }}</v-list-tile-title>
@@ -87,6 +95,12 @@ export default {
       todos: [],
       filterBy: 'all',
       errorMessage: '',
+      snackbar: {
+        show: false,
+        icon: 'check',
+        timeout: 3000,
+        message: '',
+      },
     };
   },
   mounted() {
@@ -137,33 +151,24 @@ export default {
           if (res.status === 200) {
             this.newTodo = '';
             this.todos.unshift(res.data.data);
+            this.snackbar.message = 'Todo added.';
+            this.snackbar.show = true;
           }
         });
     },
-    toggleTodoCompletedness(todoId) {
+    setTodoCompletedness(todoId) {
       const todoToToggle = this.todos.find((todo) => todo.id === todoId);
-      if (todoToToggle === false) {
-        return TodoApi
-          .completeTodo(todoId)
-          .then((res) => {
-            if (res.status === 200) {
-              todoToToggle.completeTodo = true;
-            }
-          });
-      }
+      console.log(todoToToggle.completed);
       TodoApi
-        .uncompleteTodo(todoId)
-        .then((res) => {
-          if (res.status === 200) {
-            todoToToggle.completeTodo = false;
-          }
-        });
+        .completeTodo(todoId, todoToToggle.completed);
     },
     deleteTodo(todoId) {
       TodoApi
         .deleteTodo(todoId)
         .then((res) => {
           this.fetchTodos();
+          this.snackbar.message = `Todo ${todoId} deleted.`;
+          this.snackbar.show = true;
         });
     },
     setFilterByOption(value) {

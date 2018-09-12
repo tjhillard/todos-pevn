@@ -39,26 +39,14 @@ class TodoApi {
     });
   }
 
-  completeTodo(todoId) {
+  completeTodo(todoId, value) {
     return this.http.request(`/${todoId}`, {
       method: 'put',
       headers: {
         authorization: `Bearer ${store.getters.jwt}`,
       },
       data: {
-        completed: true,
-      },
-    });
-  }
-
-  uncompleteTodo(todoId) {
-    return this.http.request(`/${todoId}`, {
-      method: 'put',
-      headers: {
-        authorization: `Bearer ${store.getters.jwt}`,
-      },
-      data: {
-        completed: false,
+        completed: value,
       },
     });
   }
