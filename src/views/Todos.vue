@@ -150,7 +150,9 @@ export default {
     },
     todos() {
       this.todosCache.forEach((todo) => {
-        this.todoDescriptions.push(`${todo.description}.`);
+        if (!todo.completed) {
+          this.todoDescriptions.push(`${todo.description}.`);
+        }
       });
     },
   },
