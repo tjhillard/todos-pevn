@@ -86,12 +86,6 @@ export default {
     return {
       searchQuery: '',
       drawer: false,
-      navDrawerItems: [
-        { title: 'Home', icon: 'cake', href: '/' },
-        { title: 'Logout', icon: 'meeting_room', href: '', onClick: 'logout', showIf: 'isAuth' },
-        { title: 'Login', icon: 'security', href: 'login', showIf: '!isAuth' },
-        { title: 'Sign Up', icon: 'tag_faces', href: 'signup', showIf: '!isAuth' },
-      ],
     };
   },
   computed: {
@@ -99,23 +93,11 @@ export default {
       'isAuth',
     ]),
   },
-  mounted() {
-    this.onResize();
-    window.addEventListener('resize', this.onResize, { passive: true });
-  },
-  beforeDestroy() {
-    if (typeof window !== 'undefined') {
-      window.removeEventListener('resize', this.onResize, { passive: true });
-    }
-  },
   methods: {
     logout() {
       this.$store.dispatch('logout');
       this.drawer = false;
       this.$router.push('/login');
-    },
-    onResize() {
-      this.isMobile = window.innerWidth < 700;
     },
   },
 };
