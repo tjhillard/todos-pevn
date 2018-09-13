@@ -1,5 +1,5 @@
 <template>
-  <div class="home mt-5">
+  <div class="home mt-1">
     <h1>Set a new password</h1>
     <v-flex
       xs10 offset-xs1

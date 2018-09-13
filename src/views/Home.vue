@@ -1,5 +1,5 @@
 <template>
-  <div class="home mt-5">
+  <div class="home mt-2">
     <div v-if="isAuth">
       <h1>Welcome {{ user.email }}!</h1>
       <v-btn color="success" to="/todos">

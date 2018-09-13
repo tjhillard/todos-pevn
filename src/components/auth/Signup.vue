@@ -1,5 +1,5 @@
 <template>
-  <div class="home mt-5">
+  <div class="home mt-1">
     <h1>Register a new account</h1>
     <v-flex
       xs10 offset-xs1

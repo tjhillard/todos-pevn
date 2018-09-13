@@ -39,7 +39,7 @@ Migrations need to be ran with: `knex migrate:latest` assuming you have `knex` i
 
 2) Environment Variables
 
-`.env`
+.env
 ```
 # can be any string you want, used to sign JWT's
 JWT_TOKEN_SECRET=

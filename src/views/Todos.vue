@@ -30,7 +30,7 @@
               :strings="todoDescriptions"
               :loop="true"
               :typeSpeed="180"
-              :startDelay="500"
+              :startDelay="400"
               :shuffle="true"
               :backSpeed="70">
               <h2>I need to <span class="typing"></span></h2>
