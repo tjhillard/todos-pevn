@@ -46,6 +46,16 @@ JWT_TOKEN_SECRET=
 SEND_GRID_KEY=
 ```
 
+Emails will requrie additional configuration of `http/services/mailer-service.js` to replace the SendGrid template ID's with valid templates associated to your access key used above. The welcome template has special requirements but the reset password template needs to include something along these lines:
+
+```html
+<a href="http://{{host}}/reset_password?token={{token}}">
+  <button>
+    Reset Your Password
+  </button>
+</a>
+```
+
 3) Install dependencies
 
 ```bash
