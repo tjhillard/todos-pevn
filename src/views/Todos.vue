@@ -22,8 +22,11 @@
       </v-snackbar>
       <div class="pa-4">
         <div v-if="isLoaded">
-          <div v-if="todosCache.length == 0">
+          <div v-if="todoDescriptions.length == 0">
             <h2>I need something to do...</h2>
+          </div>
+          <div v-else-if="todoDescriptions.length == 1">
+            <h2>I need to {{ todosCache[0].description }}.</h2>
           </div>
           <div v-else>
             <vue-typed-js
@@ -108,7 +111,6 @@ export default {
   },
   data() {
     return {
-      todoDescriptions: [],
       newTodo: '',
       todosCache: [],
       todos: [],
@@ -131,6 +133,15 @@ export default {
       'user',
       'jwt',
     ]),
+    todoDescriptions() {
+      const descs = [];
+      this.todosCache.forEach((todo) => {
+        if (!todo.completed) {
+          descs.push(`${todo.description}.`);
+        }
+      });
+      return descs;
+    },
   },
   watch: {
     filterBy(val) {
@@ -147,13 +158,6 @@ export default {
         return;
       }
       return this.fetchTodos();
-    },
-    todos() {
-      this.todosCache.forEach((todo) => {
-        if (!todo.completed) {
-          this.todoDescriptions.push(`${todo.description}.`);
-        }
-      });
     },
   },
   methods: {
