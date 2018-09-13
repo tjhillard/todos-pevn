@@ -98,33 +98,4 @@ export default {
 .link {
   cursor: pointer;
 }
-@media (min-width: 959px) {
-  .nav-search {
-    height: 50px;
-    padding-top: 7px;
-    padding-left: 10px;
-  }
-}
-@media (max-width: 959px) {
-  .nav-search {
-    margin-left: 9px;
-  }
-}
-
-@media (max-width: 959px) {
-  .v-text-field {
-    max-height: 35px !important;
-  }
-}
-.nav-search {
-  margin-top: 7px;
-  padding-left: 10px;
-  height: 50px;
-}
-.nav-search-wrapper {
-  @media (max-width: 960px) {
-    height: 60px;
-  }
-  border-left: 1px solid lightgrey;
-}
 </style>
