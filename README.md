@@ -26,22 +26,45 @@ A simple todo application built for learning purposes.
 * CI/CD with CircleCI
 * Code linting with ESLint
 
-## Running Locally
+## Setup
 
-Run dev server
-```bash
-npm run serve
+1) Database can be anything supported by Knex.js. PostgreSQL was used during development with:
+
+* Postgres.app - https://postgresapp.com/
+* Postico - https://eggerapps.at/postico/
+
+Custom `knexfile.js` in the project root to configure your connection info.
+
+Migrations need to be ran with: `knex migrate:latest`
+
+2) Environment Variables
+
+```
+# can be any string you want, used to sign JWT's
+JWT_TOKEN_SECRET=
+# Get from https://app.sendgrid.com/ after making an account
+SEND_GRID_KEY=
 ```
 
-Build project assets
+3) Install dependencies
+
+```bash
+npm install
+```
+
+4) Build project files
+
 ```bash
 npm run build
 ```
 
-Run dev API
+5) Run API
+
 ```bash
 node bin/www
 ```
+
+6) Application running at `http://localhost:3000`. Run `npm run serve` if you want to run the development server with hot reloading. The development server proxies application network requests to `localhost:3000/`.
 
 ## Tests
 

@@ -7,7 +7,7 @@ const Response = require('../../services/response-service');
  * @param {Express.Request} req
  * @param {Express.Response} res
  * @param {any} next
- * @description Observes request body and validates it against Joi schema
+ * @description Observes request body and validates it against Joi schema.
  */
 exports.signUpValidator = (req, res, next) => {
   const schema = Joi.object().keys({
@@ -40,7 +40,7 @@ exports.signUpValidator = (req, res, next) => {
  * @param {Express.Request} req
  * @param {Express.Response} res
  * @param {any} next
- * @description Observes request body and validates it against Joi schema
+ * @description Observes request body and validates it against Joi schema.
  */
 exports.loginValidator = (req, res, next) => {
   const schema = Joi.object().keys({
