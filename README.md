@@ -92,3 +92,7 @@ E2E Tests (Cypress)
 ```bash
 npm run test:e2e
 ```
+
+## Documentation
+
+* API Docs: https://documenter.getpostman.com/view/112421/RWaKR7oq

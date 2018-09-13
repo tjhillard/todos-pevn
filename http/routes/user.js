@@ -7,7 +7,7 @@ const router = express.Router();
 /**
  * GET /api/v1/users/me
  *
- * @returns The authenticated user resource
+ * @returns The authenticated user resource + jwt metadata
  */
 router.get('/me', (req, res, next) => {
   if (req.user) return res.json(req.user);
