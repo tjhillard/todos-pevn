@@ -21,7 +21,7 @@
         <v-icon color="white">{{ snackbar.icon }}</v-icon>{{ snackbar.message }}
       </v-snackbar>
       <div class="pa-4">
-        <div>
+        <div v-if="isLoaded">
           <div v-if="todosCache.length == 0">
             <h2>I need something to do...</h2>
           </div>
@@ -120,6 +120,7 @@ export default {
         timeout: 3000,
         message: '',
       },
+      isLoaded: false,
     };
   },
   mounted() {
@@ -162,6 +163,7 @@ export default {
           if (!res.data.error) {
             this.todosCache = res.data.data;
             this.todos = res.data.data;
+            this.isLoaded = true;
           }
         })
         .catch((err) => {
