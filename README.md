@@ -33,12 +33,13 @@ A simple todo application built for learning purposes.
 * Postgres.app - https://postgresapp.com/
 * Postico - https://eggerapps.at/postico/
 
-Custom `knexfile.js` in the project root to configure your connection info.
+Customize `knexfile.js` in the project root to configure your connection info.
 
-Migrations need to be ran with: `knex migrate:latest`
+Migrations need to be ran with: `knex migrate:latest` assuming you have `knex` installed globally.
 
 2) Environment Variables
 
+`.env`
 ```
 # can be any string you want, used to sign JWT's
 JWT_TOKEN_SECRET=
@@ -46,7 +47,7 @@ JWT_TOKEN_SECRET=
 SEND_GRID_KEY=
 ```
 
-Emails will requrie additional configuration of `http/services/mailer-service.js` to replace the SendGrid template ID's with valid templates associated to your access key used above. The welcome template has special requirements but the reset password template needs to include something along these lines:
+Emails will requrie additional configuration of `http/services/mailer-service.js` to replace the SendGrid template ID's with valid templates associated to your access key used above. The welcome template has no special requirements but the reset password template needs to include something along these lines:
 
 ```html
 <a href="http://{{host}}/reset_password?token={{token}}">
