@@ -4,7 +4,7 @@
       <v-toolbar flat>
         <v-toolbar-side-icon class="hidden-md-and-up" @click="drawer = !drawer">
         </v-toolbar-side-icon>
-        <router-link tag="v-toolbar-title" to="/" class="link">PEVN Todos</router-link>
+        <router-link tag="v-toolbar-title" to="/" class="link">Todos</router-link>
         <v-spacer></v-spacer>
         <v-toolbar-items class="hidden-sm-and-down">
           <v-btn v-if="!isAuth" class="nav-link" to="/login" flat>Log In</v-btn>
@@ -22,7 +22,7 @@
             <v-list-tile>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  <h2>PEVN Todos</h2>
+                  <h2>Todos</h2>
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
