@@ -27,18 +27,47 @@
               </v-list-tile-content>
             </v-list-tile>
             <router-link
-              :to="item.href"
-              tag="v-list-tile"
-              v-for="item in navDrawerItems"
-              :key="item.title"
-            >
+              to="/"
+              tag="v-list-tile">
               <v-list-tile-action right>
-                <v-icon>{{ item.icon }}</v-icon>
+                <v-icon>cake</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
-                <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                <v-list-tile-title>Home</v-list-tile-title>
               </v-list-tile-content>
             </router-link>
+            <router-link
+              to="/login"
+              v-if="!isAuth"
+              tag="v-list-tile">
+              <v-list-tile-action right>
+                <v-icon>security</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>Login</v-list-tile-title>
+              </v-list-tile-content>
+            </router-link>
+            <router-link
+              to="/signup"
+              v-if="!isAuth"
+              tag="v-list-tile">
+              <v-list-tile-action right>
+                <v-icon>tag_faces</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>Sign up</v-list-tile-title>
+              </v-list-tile-content>
+            </router-link>
+            <v-list-tile
+              v-if="isAuth"
+              @click="logout">
+              <v-list-tile-action right>
+                <v-icon>meeting_room</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>Logout</v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
           </v-list>
           <v-list class="pt-0" dense>
             <v-divider></v-divider>
@@ -58,7 +87,10 @@ export default {
       searchQuery: '',
       drawer: false,
       navDrawerItems: [
-        { title: 'Home', icon: 'star', href: '/' },
+        { title: 'Home', icon: 'cake', href: '/' },
+        { title: 'Logout', icon: 'meeting_room', href: '', onClick: 'logout', showIf: 'isAuth' },
+        { title: 'Login', icon: 'security', href: 'login', showIf: '!isAuth' },
+        { title: 'Sign Up', icon: 'tag_faces', href: 'signup', showIf: '!isAuth' },
       ],
     };
   },
@@ -79,6 +111,7 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('logout');
+      this.drawer = false;
       this.$router.push('/login');
     },
     onResize() {
