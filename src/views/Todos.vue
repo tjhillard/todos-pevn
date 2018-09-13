@@ -1,5 +1,5 @@
 <template>
-  <div class="home mt-2">
+  <div class="home mt-1">
     <v-flex
       sm10 offset-sm1
       md8 offset-md2
@@ -21,7 +21,22 @@
         <v-icon color="white">{{ snackbar.icon }}</v-icon>{{ snackbar.message }}
       </v-snackbar>
       <div class="pa-4">
-        <h1>My Todos ({{ todos.length }})</h1>
+        <div>
+          <div v-if="todosCache.length == 0">
+            <h2>I need something to do...</h2>
+          </div>
+          <div v-else>
+            <vue-typed-js
+              :strings="todoDescriptions"
+              :loop="true"
+              :typeSpeed="180"
+              :startDelay="500"
+              :shuffle="true"
+              :backSpeed="70">
+              <h2>I need to <span class="typing"></span></h2>
+            </vue-typed-js>
+          </div>
+        </div>
         <v-text-field
           label="Add new todo"
           v-model="newTodo"
@@ -36,7 +51,7 @@
               block
               @click="setFilterByOption('all')"
               :class="{ accent: filterBy === 'all' }">
-              All
+              All ({{ todosCache.length }})
             </v-btn>
           </v-flex>
           <v-flex xs-4>
@@ -66,8 +81,7 @@
             <v-list-tile-content>
               <v-list-tile-title>{{ todo.description }}</v-list-tile-title>
               <v-list-tile-sub-title>
-                Added {{ todo.created_at | formatTimeDistance }} ago @
-                {{ todo.created_at | formatDateTime }}
+                Added {{ todo.created_at | formatTimeDistance }} ago
               </v-list-tile-sub-title>
             </v-list-tile-content>
             <v-list-tile-action>
@@ -82,14 +96,19 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { VueTypedJs } from 'vue-typed-js';
 import format from 'date-fns/format';
 import distanceInWords from 'date-fns/distance_in_words';
 import TodoApi from '@/services/api/todo-api-service';
 
 export default {
   name: 'home',
+  components: {
+    VueTypedJs,
+  },
   data() {
     return {
+      todoDescriptions: [],
       newTodo: '',
       todosCache: [],
       todos: [],
@@ -128,6 +147,11 @@ export default {
       }
       return this.fetchTodos();
     },
+    todos() {
+      this.todosCache.forEach((todo) => {
+        this.todoDescriptions.push(`${todo.description}.`);
+      });
+    },
   },
   methods: {
     fetchTodos() {
@@ -158,9 +182,7 @@ export default {
     },
     setTodoCompletedness(todoId) {
       const todoToToggle = this.todos.find((todo) => todo.id === todoId);
-      console.log(todoToToggle.completed);
-      TodoApi
-        .completeTodo(todoId, todoToToggle.completed);
+      TodoApi.completeTodo(todoId, todoToToggle.completed);
     },
     deleteTodo(todoId) {
       TodoApi
@@ -185,3 +207,4 @@ export default {
   },
 };
 </script>
+

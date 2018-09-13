@@ -38,6 +38,7 @@
     "validator": "^10.7.1",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
+    "vue-typed-js": "^0.1.2",
     "vuetify": "^1.0.19",
     "vuex": "^3.0.1"
   },
