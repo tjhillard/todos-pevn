@@ -23,21 +23,13 @@
       <div class="pa-4">
         <div v-if="isLoaded">
           <div v-if="todoDescriptions.length == 0">
-            <h2>I need something to do...</h2>
+            <h2>I need something new to do...</h2>
           </div>
           <div v-else-if="todoDescriptions.length == 1">
-            <h2>I need to {{ todosCache[0].description }}.</h2>
+            <h2>I need to {{ todoDescriptions[0] }}.</h2>
           </div>
           <div v-else>
-            <vue-typed-js
-              :strings="todoDescriptions"
-              :loop="true"
-              :typeSpeed="180"
-              :startDelay="400"
-              :shuffle="true"
-              :backSpeed="70">
-              <h2>I need to <span class="typing"></span></h2>
-            </vue-typed-js>
+            <h2>I've got {{ activeTodos.length }} tasks to complete.</h2>
           </div>
         </div>
         <v-text-field
@@ -63,7 +55,7 @@
               block
               @click="setFilterByOption('active')"
               :class="{ accent: filterBy === 'active' }">
-              Active
+              Active ({{ activeTodos.length }})
             </v-btn>
           </v-flex>
           <v-flex xs-4>
@@ -72,7 +64,7 @@
               block
               @click="setFilterByOption('completed')"
               :class="{ accent: filterBy === 'completed' }">
-              Completed
+              Completed ({{ completedTodos.length }})
             </v-btn>
           </v-flex>
         </v-layout>
@@ -99,16 +91,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { VueTypedJs } from 'vue-typed-js';
 import format from 'date-fns/format';
 import distanceInWords from 'date-fns/distance_in_words';
 import TodoApi from '@/services/api/todo-api-service';
 
 export default {
-  name: 'home',
-  components: {
-    VueTypedJs,
-  },
+  name: 'todos',
   data() {
     return {
       newTodo: '',
@@ -134,30 +122,36 @@ export default {
       'jwt',
     ]),
     todoDescriptions() {
-      const descs = [];
+      const descriptions = [];
       this.todosCache.forEach((todo) => {
         if (!todo.completed) {
-          descs.push(`${todo.description}.`);
+          descriptions.push(`${todo.description}.`);
         }
       });
-      return descs;
+      return descriptions;
+    },
+    activeTodos() {
+      return this.todosCache.filter((todo) => {
+        return !todo.completed;
+      });
+    },
+    completedTodos() {
+      return this.todosCache.filter((todo) => {
+        return todo.completed;
+      });
     },
   },
   watch: {
     filterBy(val) {
       if (val === 'active') {
-        this.todos = this.todosCache.filter((todo) => {
-          return !todo.completed;
-        });
+        this.todos = this.activeTodos;
         return;
       }
       if (val === 'completed') {
-        this.todos = this.todosCache.filter((todo) => {
-          return todo.completed;
-        });
+        this.todos = this.completedTodos;
         return;
       }
-      return this.fetchTodos();
+      this.fetchTodos();
     },
   },
   methods: {
