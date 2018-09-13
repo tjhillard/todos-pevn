@@ -58,7 +58,7 @@ export default {
       searchQuery: '',
       drawer: false,
       navDrawerItems: [
-        { title: 'Featured', icon: 'star', href: '/featured' },
+        { title: 'Home', icon: 'star', href: '/' },
       ],
     };
   },
