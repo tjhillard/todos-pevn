@@ -44,7 +44,7 @@
             <v-btn
               depressed
               block
-              @click="setFilterByOption('all')"
+              @click="setFilterBy('all')"
               :class="{ accent: filterBy === 'all' }">
               All ({{ todosCache.length }})
             </v-btn>
@@ -53,7 +53,7 @@
             <v-btn
               depressed
               block
-              @click="setFilterByOption('active')"
+              @click="setFilterBy('active')"
               :class="{ accent: filterBy === 'active' }">
               Active ({{ activeTodos.length }})
             </v-btn>
@@ -62,7 +62,7 @@
             <v-btn
               depressed
               block
-              @click="setFilterByOption('completed')"
+              @click="setFilterBy('completed')"
               :class="{ accent: filterBy === 'completed' }">
               Completed ({{ completedTodos.length }})
             </v-btn>
@@ -91,7 +91,6 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import format from 'date-fns/format';
 import distanceInWords from 'date-fns/distance_in_words';
 import TodoApi from '@/services/api/todo-api-service';
 
@@ -99,6 +98,7 @@ export default {
   name: 'todos',
   data() {
     return {
+      isLoaded: false,
       newTodo: '',
       todosCache: [],
       todos: [],
@@ -110,7 +110,6 @@ export default {
         timeout: 3000,
         message: '',
       },
-      isLoaded: false,
     };
   },
   mounted() {
@@ -168,6 +167,7 @@ export default {
         })
         .catch((err) => {
           this.errorMessage = 'There was a problem fetching your todos. Please try again.';
+          this.isLoaded = true;
         });
     },
     addTodo() {
@@ -177,32 +177,52 @@ export default {
           if (res.status === 200) {
             this.newTodo = '';
             this.todos.unshift(res.data.data);
-            this.snackbar.message = 'Todo added.';
-            this.snackbar.show = true;
+            this.showSnackbar('Todo added!');
           }
+        })
+        .catch(() => {
+          this.errorMessage = 'Error adding todo. Refresh the page and try again.';
         });
     },
     setTodoCompletedness(todoId) {
       const todoToToggle = this.todos.find((todo) => todo.id === todoId);
-      TodoApi.completeTodo(todoId, todoToToggle.completed);
+      if (todoToToggle.completed) {
+        if (this.activeTodos.length > 0) {
+          this.showSnackbar(`Nice! 1 down and ${this.activeTodos.length} to go.`);
+        } else {
+          this.showSnackbar('Sweet. That\'s all of em. 💪');
+        }
+      }
+      TodoApi
+        .completeTodo(todoId, todoToToggle.completed)
+        .catch(() => {
+          this.errorMessage = 'Error updating todo. Refresh the page and try again.';
+        });
     },
     deleteTodo(todoId) {
       TodoApi
         .deleteTodo(todoId)
         .then((res) => {
           this.fetchTodos();
-          this.snackbar.message = `Todo ${todoId} deleted.`;
-          this.snackbar.show = true;
+          this.showSnackbar('Todo deleted.');
+        })
+        .catch(() => {
+          this.errorMessage = 'Error deleting todo. Refresh the page and try again.';
         });
     },
-    setFilterByOption(value) {
+    setFilterBy(value) {
       this.filterBy = value;
+    },
+    showSnackbar(message, style = 'success', icon = 'check') {
+      this.snackbar = {
+        show: true,
+        message,
+        style,
+        icon,
+      };
     },
   },
   filters: {
-    formatDateTime(value) {
-      return format(value, 'MM/DD/YYYY h:mm:ss');
-    },
     formatTimeDistance(value) {
       return distanceInWords(value, new Date());
     },

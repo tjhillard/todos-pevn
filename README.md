@@ -17,7 +17,6 @@ A simple todo application built for learning purposes.
 ## Features
 * User authentication & authorization with JWT
 * RESTful JSON API
-* Progressive Web App Support
 * Reset/forgot password functionality
 * Emails with SendGrid
 * e2e testing with Cypress
